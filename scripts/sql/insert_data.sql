@@ -28,5 +28,18 @@ values
     '<user name surname>'
 );
 
-select * from mail_smtp_configuration
+insert into public.mail_message_log_status
+(code, name)
+values
+('C', 'Created'),
+('P', 'Pending'),
+('F', 'Failed'),
+('S', 'Sent')
+
+insert into public.mail_message_log_type
+(code, name)
+values
+('E', 'Email'),
+('S', 'Sms')
+
 

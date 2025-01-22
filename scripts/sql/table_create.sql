@@ -100,19 +100,11 @@ CREATE TABLE IF NOT EXISTS public.mail_message_log_attachment (
     message_log_id UUID NOT NULL,
     attachment_url TEXT NULL,
     file_name VARCHAR(200) NULL,
-    content_id VARCHAR(200) NULL,
-    is_inline_image BOOLEAN NULL,
-    extension VARCHAR(50) NULL,
-    file_size_kb NUMERIC(19, 6) NULL,
     is_processed BOOLEAN NULL,
-    attachment_data BYTEA NULL,
 
     CONSTRAINT fk_mail_message_log_attachment FOREIGN KEY (message_log_id)
         REFERENCES public.mail_message_log (id)
 );
-
-
-
 
 CREATE TABLE IF NOT EXISTS public.mail_message_log_header (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
