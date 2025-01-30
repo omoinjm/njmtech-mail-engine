@@ -5,10 +5,7 @@ namespace Mail.Engine.Service.Shared.Services
 {
     public class OutboundMailService<T>(IConfigurationService config, ILogger<T> logger) : ServiceBase<T>(logger)
     {
-        const string SCOPE_EMAIL = "email";
-        const string SCOPE_OPEN_ID = "openid";
-        const string SCOPE_OFFLINE_ACCESS = "offline_access";
-        const string SCOPE_SMTP = "https://outlook.office.com/SMTP.Send";
+
 
 
     }

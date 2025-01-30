@@ -1,0 +1,101 @@
+# Database Structure
+
+```mermaid
+erDiagram
+    error_log {
+        UUID id PK
+        UUID message_log_id
+        UUID message_id
+        UUID mailbox_id
+        UUID smtp_id
+        VARCHAR smtp_code
+        UUID imap_id
+        VARCHAR imap_code
+        TEXT message
+        TEXT stack_trace
+        TIMESTAMP created_at
+        VARCHAR area
+        VARCHAR function
+        TEXT source
+        VARCHAR help_link
+        VARCHAR engine
+        VARCHAR step
+    }
+
+    message_log_status {
+        UUID id PK
+        VARCHAR code UK
+        VARCHAR name
+    }
+
+    message_log_type {
+        UUID id PK
+        VARCHAR code UK
+        VARCHAR name
+    }
+
+    smtp_configuration {
+        UUID id PK
+        VARCHAR code UK
+        VARCHAR name
+        VARCHAR smtp
+        BOOLEAN ssl
+        INT port
+        VARCHAR email_address
+        VARCHAR username
+        VARCHAR password
+        VARCHAR from_name
+        BOOLEAN is_active
+        TIMESTAMP created_at
+        VARCHAR created_by
+        VARCHAR modified_by
+        TIMESTAMP modified_at
+    }
+
+    message_log {
+        UUID id PK
+        UUID message_log_header_id FK
+        VARCHAR from_field
+        VARCHAR from_name
+        TEXT to_field
+        TEXT cc_field
+        TEXT bcc_field
+        VARCHAR subject
+        TEXT body
+        VARCHAR message_log_type_code FK
+        UUID message_log_type_id FK
+        VARCHAR message_log_status_code FK
+        UUID message_log_status_id FK
+        UUID smtp_configuration_id FK
+        VARCHAR smtp_configuration_code FK
+        TIMESTAMP date_sent
+        TEXT status_message
+        TIMESTAMP created_at
+        VARCHAR created_by
+    }
+
+    message_log_attachment {
+        UUID id PK
+        UUID message_log_id FK
+        TEXT attachment_url
+        VARCHAR file_name
+        BOOLEAN is_processed
+    }
+
+    message_log_header {
+        UUID id PK
+        VARCHAR table_name
+        INT primary_key
+        VARCHAR subject
+        TIMESTAMP created_at
+        VARCHAR created_by
+        TIMESTAMP modified_at
+        VARCHAR modified_by
+    }
+
+    message_log ||--o{ message_log_attachment : "has"
+    message_log_header ||--o{ message_log : "has"
+    message_log_status ||--o{ message_log : "has"
+    message_log_type ||--o{ message_log : "has"
+    smtp_configuration ||--o{ message_log : "has"
+```

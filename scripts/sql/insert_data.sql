@@ -1,4 +1,5 @@
-insert into public.mail_smtp_configuration (
+-- Insert data
+insert into mail.smtp_configuration (
     name,
     code,
     smtp,
@@ -28,18 +29,16 @@ values
     '<user name surname>'
 );
 
-insert into public.mail_message_log_status
+insert into mail.message_log_status
 (code, name)
 values
 ('C', 'Created'),
 ('P', 'Pending'),
 ('F', 'Failed'),
-('S', 'Sent')
+('S', 'Sent');
 
-insert into public.mail_message_log_type
+insert into mail.message_log_type
 (code, name)
 values
 ('E', 'Email'),
-('S', 'Sms')
-
-
+('S', 'Sms');
