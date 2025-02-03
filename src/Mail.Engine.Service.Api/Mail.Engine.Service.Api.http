@@ -1,0 +1,6 @@
+@Mail.Engine.Service.Api_HostAddress = http://localhost:5135
+
+GET {{Mail.Engine.Service.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

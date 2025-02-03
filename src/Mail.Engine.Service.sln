@@ -3,9 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mail.Engine.Service.Shared", "Mail.Engine.Service.Shared\Mail.Engine.Service.Shared.csproj", "{8A0BE698-E416-4969-B1DB-C53569E2A149}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mail.Engine.Service.Core", "Mail.Engine.Service.Core\Mail.Engine.Service.Core.csproj", "{C2821126-B0D8-47DF-91AE-F30BACE16CE8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mail.Engine.Service.Console", "Mail.Engine.Service.Console\Mail.Engine.Service.Console.csproj", "{3DCD41E4-3568-4F9E-9677-47BB6CDA407F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mail.Engine.Service.Application", "Mail.Engine.Service.Application\Mail.Engine.Service.Application.csproj", "{D9BDDDC4-8887-4CC8-89B4-0B613BC4768B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mail.Engine.Service.Infrastructure", "Mail.Engine.Service.Infrastructure\Mail.Engine.Service.Infrastructure.csproj", "{EF8BB286-BBE0-40EA-B101-78820909C420}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mail.Engine.Service.Api", "Mail.Engine.Service.Api\Mail.Engine.Service.Api.csproj", "{C561AC59-9305-44C1-B4FB-3EB5B697BF2F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,5 +28,21 @@ Global
 		{3DCD41E4-3568-4F9E-9677-47BB6CDA407F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3DCD41E4-3568-4F9E-9677-47BB6CDA407F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3DCD41E4-3568-4F9E-9677-47BB6CDA407F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C2821126-B0D8-47DF-91AE-F30BACE16CE8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2821126-B0D8-47DF-91AE-F30BACE16CE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C2821126-B0D8-47DF-91AE-F30BACE16CE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2821126-B0D8-47DF-91AE-F30BACE16CE8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D9BDDDC4-8887-4CC8-89B4-0B613BC4768B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D9BDDDC4-8887-4CC8-89B4-0B613BC4768B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D9BDDDC4-8887-4CC8-89B4-0B613BC4768B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D9BDDDC4-8887-4CC8-89B4-0B613BC4768B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF8BB286-BBE0-40EA-B101-78820909C420}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF8BB286-BBE0-40EA-B101-78820909C420}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF8BB286-BBE0-40EA-B101-78820909C420}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF8BB286-BBE0-40EA-B101-78820909C420}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C561AC59-9305-44C1-B4FB-3EB5B697BF2F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C561AC59-9305-44C1-B4FB-3EB5B697BF2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C561AC59-9305-44C1-B4FB-3EB5B697BF2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C561AC59-9305-44C1-B4FB-3EB5B697BF2F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
