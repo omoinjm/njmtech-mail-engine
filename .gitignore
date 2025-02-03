@@ -3,8 +3,9 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
-# dotenv files
-.env
+# secrets
+**/.env
+**/appsettings.*
 
 # User-specific files
 *.suo
@@ -290,5 +291,3 @@ __pycache__/
 *.btm.cs
 *.odx.cs
 *.xsd.cs
-
-appsettings.*
