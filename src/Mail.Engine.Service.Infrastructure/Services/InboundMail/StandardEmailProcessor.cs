@@ -35,6 +35,7 @@ namespace Mail.Engine.Service.Infrastructure.Services.InboundMail
         private async Task<bool> SaveMailToDatabaseAsync(MimeMessage message, MailboxEntity mailbox)
         {
             var mailMessage = _messageBuilder.BuildMailMessage(message);
+
             var mailMessageId = await _mailRepository.UpsertMailMessageAsync(mailMessage, mailbox);
 
             if (mailMessageId == Guid.Empty)

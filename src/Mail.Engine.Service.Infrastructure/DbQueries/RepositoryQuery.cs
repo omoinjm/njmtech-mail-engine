@@ -142,17 +142,16 @@ namespace Mail.Engine.Service.Infrastructure.DbQueries
         public static string MailboxInsert()
         {
             var query = @"
-
-                CALL mail.mailbox_insert(
-                    @p_mailbox_id, @p_mailbox_name, @p_mailbox_is_active,
-                    @p_smtp, @p_smtp_ssl, @p_smtp_port, @p_smtp_username, @p_smtp_password,
-                    @p_imap, @p_imap_port, @p_imap_ssl, @p_imap_username, @p_imap_password, @p_logged_in_user
+               CALL mail.message_insert(
+                    @p_new_mail_message_id, @p_mailbox_id, @p_subject, @p_text_plain, @p_text_html, @p_format_text_html,
+                    @p_date_sent, @p_cc_field, @p_bcc_field, @p_sent_to, @p_sent_from,
+                    @p_sent_from_display_name, @p_sent_from_raw, @p_imap_message_id,
+                    @p_mime_version, @p_return_path, @p_logged_in_user
                 );
-
             ";
-
             return query;
         }
+
 
         public static string InReplyToInsert()
         {

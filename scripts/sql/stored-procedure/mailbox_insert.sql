@@ -27,6 +27,7 @@ DECLARE
     v_now TIMESTAMP := NOW();
 BEGIN
     INSERT INTO mail.message (
+        mailbox_id,
         subject,
         text_plain,
         text_html,
@@ -46,6 +47,7 @@ BEGIN
         is_deleted
     )
     VALUES (
+        p_mailbox_id,
         p_subject,
         p_text_plain,
         p_text_html,
@@ -64,10 +66,10 @@ BEGIN
         v_now,
         FALSE
     )
-    RETURNING id INTO p_new_mail_message_id;
+    RETURNING id INTO STRICT p_new_mail_message_id;  -- Using STRICT to ensure a value is returned
 
 EXCEPTION
     WHEN OTHERS THEN
-        RAISE EXCEPTION 'Error: %', SQLERRM;
+        RAISE EXCEPTION 'Error inserting message into mail.message: %', SQLERRM;
 END;
 $$;
