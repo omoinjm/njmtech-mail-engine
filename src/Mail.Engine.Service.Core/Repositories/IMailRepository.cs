@@ -6,10 +6,13 @@ namespace Mail.Engine.Service.Core.Repositories
     {
 
         Task<List<MailboxEntity>> GetMailboxes();
-        Task<List<MessageLogEntity>> LoadMessageLogs();
+        Task<List<MessageLogEntity>> GetMessageLogs();
+        Task<List<MessageLogAttachmentEntity>> GetMessageAttachments(string messageLogId);
 
-        Task<Guid> UpsertMailMessageAsync(MessageEntity message, MailboxEntity mailbox);
-        Task UpsertInReplyToAsync(string mailMessageId, string inReplyTo);
-        Task UpsertReferenceMailAsync(string mailMessageId, string reference);
+        Task<Guid> CreateMailMessageAsync(MessageEntity message, MailboxEntity mailbox);
+        Task CreateInReplyToAsync(string mailMessageId, string inReplyTo);
+        Task CreateReferenceMailAsync(string mailMessageId, string reference);
+
+        Task<bool> UpdateStatusAsync(MessageLogEntity messageLog);
     }
 }

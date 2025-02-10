@@ -25,6 +25,18 @@ namespace Mail.Engine.Service.Application.Configuration
                 ?? GetValue("AZURE_BLOB_CONTAINER_NAME")!;
         }
 
+        public string TestEmailAddress()
+        {
+            return Environment.GetEnvironmentVariable("TEST_EMAIL_ADDRESS")
+                ?? GetValue("TEST_EMAIL_ADDRESS")!;
+        }
+
+        public bool EmailTesting()
+        {
+            return Environment.GetEnvironmentVariable("EMAIL_TESTING") == "true"
+                || GetValue("EMAIL_TESTING") == "true";
+        }
+
         private string GetValue(string configName)
         {
             return _configuration.GetValue<string>($"Values:{configName}")!;

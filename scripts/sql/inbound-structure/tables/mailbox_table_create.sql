@@ -1,3 +1,6 @@
+-- Ensure the necessary schema exists
+CREATE SCHEMA IF NOT EXISTS mail;
+
 CREATE TABLE IF NOT EXISTS mail.imap_configuration  (
    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
    code VARCHAR(50) NOT NULL,
@@ -9,7 +12,7 @@ CREATE TABLE IF NOT EXISTS mail.imap_configuration  (
    password VARCHAR(50) NOT NULL,
    is_active BOOLEAN DEFAULT TRUE,
    created_at TIMESTAMP NOT NULL DEFAULT NOW(),
-   created_by VARCHAR(255) NOT NULL DEFAULT 'System',
+   created_by VARCHAR(255) NOT NULL DEFAULT 'Mail Service Api',
    modified_at TIMESTAMP NULL,
    modified_by VARCHAR(255) NULL
 
@@ -29,7 +32,7 @@ CREATE TABLE IF NOT EXISTS mail.smtp_configuration (
    from_name VARCHAR(200) NOT NULL,
    is_active BOOLEAN DEFAULT TRUE,
    created_at TIMESTAMP NOT NULL DEFAULT NOW(),
-   created_by VARCHAR(255) NOT NULL DEFAULT 'System',
+   created_by VARCHAR(255) NOT NULL DEFAULT 'Mail Service Api',
    modified_at TIMESTAMP NULL,
    modified_by VARCHAR(255) NULL,
 
@@ -53,7 +56,7 @@ CREATE TABLE IF NOT EXISTS mail.mailbox (
    imap_id UUID,
    is_active BOOLEAN DEFAULT TRUE,   
    created_at TIMESTAMP NOT NULL DEFAULT NOW(),
-   created_by VARCHAR(255) NOT NULL DEFAULT 'System',
+   created_by VARCHAR(255) NOT NULL DEFAULT 'Mail Service Api',
    modified_at TIMESTAMP NULL,
    modified_by VARCHAR(255) NULL,
 
@@ -78,7 +81,7 @@ CREATE TABLE IF NOT EXISTS mail.message (
     imap_message_id VARCHAR(500) NULL,
     mime_version VARCHAR(255) NULL,
     return_path TEXT NULL,
-    created_by VARCHAR(255) NOT NULL DEFAULT 'System',
+    created_by VARCHAR(255) NOT NULL DEFAULT 'Mail Service Api',
     created_at TIMESTAMP NOT NULL DEFAULT NOW(),
     is_deleted BOOLEAN NOT NULL DEFAULT false,
     -- Add foreign key constraint for mailbox

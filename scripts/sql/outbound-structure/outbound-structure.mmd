@@ -1,0 +1,76 @@
+erDiagram
+    ERROR_LOG {
+        UUID id PK
+        UUID message_log_id
+        UUID message_id
+        UUID mailbox_id
+        UUID smtp_id
+        UUID imap_id
+        TEXT message
+        TEXT stack_trace
+        TIMESTAMP created_at
+        VARCHAR area
+        VARCHAR function
+        TEXT source
+        VARCHAR help_link
+        VARCHAR engine
+        VARCHAR step
+    }
+
+    MESSAGE_LOG_STATUS {
+        UUID id PK
+        VARCHAR code
+        VARCHAR name
+    }
+
+    MESSAGE_LOG_TYPE {
+        UUID id PK
+        VARCHAR code
+        VARCHAR name
+    }
+
+    MESSAGE_LOG_HEADER {
+        UUID id PK
+        VARCHAR table_name
+        INT primary_key
+        VARCHAR subject
+        TIMESTAMP created_at
+        VARCHAR created_by
+        TIMESTAMP modified_at
+        VARCHAR modified_by
+    }
+
+    MESSAGE_LOG {
+        UUID id PK
+        UUID message_log_header_id FK
+        UUID message_log_type_id FK
+        UUID message_log_status_id FK
+        UUID smtp_configuration_id FK
+        VARCHAR from_field
+        VARCHAR from_name
+        TEXT to_field
+        TEXT cc_field
+        TEXT bcc_field
+        VARCHAR subject
+        TEXT body
+        TIMESTAMP date_sent
+        TEXT status_message
+        TIMESTAMP created_at
+        VARCHAR created_by
+    }
+
+    MESSAGE_LOG_ATTACHMENT {
+        UUID id PK
+        UUID message_log_id FK
+        TEXT attachment_url
+        VARCHAR file_name
+        BOOLEAN is_processed
+        TIMESTAMP created_at
+        VARCHAR created_by
+    }
+
+    ERROR_LOG ||--o| MESSAGE_LOG : has
+    MESSAGE_LOG_STATUS ||--o| MESSAGE_LOG : has
+    MESSAGE_LOG_TYPE ||--o| MESSAGE_LOG : has
+    MESSAGE_LOG_HEADER ||--o| MESSAGE_LOG : has
+    MESSAGE_LOG ||--o| MESSAGE_LOG_ATTACHMENT : has

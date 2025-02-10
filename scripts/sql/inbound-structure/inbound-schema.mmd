@@ -1,10 +1,7 @@
-# Database Structure
-
-```mermaid
 erDiagram
     IMAP_CONFIGURATION {
         UUID id PK
-        VARCHAR(50) code UK
+        VARCHAR(50) code
         VARCHAR(255) name
         VARCHAR(255) imap
         BOOLEAN ssl
@@ -20,7 +17,7 @@ erDiagram
 
     SMTP_CONFIGURATION {
         UUID id PK
-        VARCHAR(20) code UK
+        VARCHAR(20) code
         VARCHAR(200) name
         VARCHAR(200) smtp
         BOOLEAN ssl
@@ -41,7 +38,7 @@ erDiagram
         VARCHAR(500) secret_id
         BOOLEAN use_access_token
         TEXT access_token
-        TEXT code_challange
+        TEXT code_challenge
         TEXT refresh_token
     }
 
@@ -69,7 +66,7 @@ erDiagram
         TEXT bcc_field
         TEXT sent_to
         VARCHAR(500) sent_from
-        VARCHAR(500) sent_from_displayn_ame
+        VARCHAR(500) sent_from_display_name
         VARCHAR(500) sent_from_raw
         VARCHAR(500) imap_message_id
         VARCHAR(255) mime_version
@@ -79,7 +76,22 @@ erDiagram
         BOOLEAN is_deleted
     }
 
-    MAILBOX ||--o{ MESSAGE : "has"
-    SMTP_CONFIGURATION ||--o{ MAILBOX : "configures"
-    IMAP_CONFIGURATION ||--o{ MAILBOX : "configures"
-```
+    IN_REPLY_TO {
+        UUID id PK
+        UUID mail_message_id FK
+        VARCHAR(100) in_reply_to_message_id
+        TIMESTAMP created_at
+    }
+
+    REFERENCE {
+        UUID id PK
+        UUID mail_message_id FK
+        VARCHAR(500) reference_message_id
+        TIMESTAMP created_at
+    }
+
+    MAILBOX ||--o{ SMTP_CONFIGURATION : "uses"
+    MAILBOX ||--o{ IMAP_CONFIGURATION : "uses"
+    MESSAGE ||--o{ MAILBOX : "belongs to"
+    IN_REPLY_TO ||--o{ MESSAGE : "references"
+    REFERENCE ||--o{ MESSAGE : "references"

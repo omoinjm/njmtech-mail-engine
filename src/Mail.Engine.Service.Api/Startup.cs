@@ -6,9 +6,11 @@ using Mail.Engine.Service.Application.Handlers;
 using Mail.Engine.Service.Core.Repositories;
 using Mail.Engine.Service.Core.Services;
 using Mail.Engine.Service.Core.Services.InboundMail;
+using Mail.Engine.Service.Core.Services.OutboundMail;
 using Mail.Engine.Service.Infrastructure.Repositories;
 using Mail.Engine.Service.Infrastructure.Services;
 using Mail.Engine.Service.Infrastructure.Services.InboundMail;
+using Mail.Engine.Service.Infrastructure.Services.OutboundMail;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.OpenApi.Models;
@@ -69,6 +71,7 @@ namespace Mail.Engine.Service.Api
                 );
             });
 
+            // Inbound Mail Service
             services.AddScoped<IEmailProcessor, StandardEmailProcessor>();
 
             services.AddScoped<IAttachmentProcessor, AttachmentProcessor>();
@@ -76,6 +79,11 @@ namespace Mail.Engine.Service.Api
             services.AddScoped<IEmailAuthenticator, StandardAuthenticator>();
             services.AddScoped<IEmailFolderManager, EmailFolderManager>();
             services.AddScoped<IMailMessageBuilder, MailMessageBuilder>();
+
+            // Outbound Mail Service
+            services.AddScoped<IEmailAttachmentProcessor, EmailAttachmentProcessor>();
+            services.AddScoped<IEmailBuilder, EmailBuilder>();
+            services.AddScoped<ISmtpClientFactory, SmtpClientFactory>();
 
 
             if (_env.IsProduction())

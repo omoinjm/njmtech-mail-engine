@@ -1,6 +1,5 @@
 using Mail.Engine.Service.Core.Entities;
 using MailKit.Security;
-using MimeKit;
 using Newtonsoft.Json.Linq;
 
 namespace Mail.Engine.Service.Core.Helpers
@@ -36,71 +35,6 @@ namespace Mail.Engine.Service.Core.Helpers
             return token != null
                 ? new SaslMechanismOAuth2(mailbox.ImapUsername, token.ToString())
                 : null;
-        }
-
-        public static string GetPlainTextInMessage(MimeMessage message)
-        {
-            return message.GetTextBody(MimeKit.Text.TextFormat.Plain);
-        }
-
-        public static string GetHtmlInMessage(MimeMessage message)
-        {
-            return message.GetTextBody(MimeKit.Text.TextFormat.Html);
-        }
-
-        public static string GetCcList(MimeMessage message)
-        {
-            string cc = string.Empty;
-            if (message.Headers != null)
-            {
-                foreach (var item in message.Cc.Mailboxes)
-                {
-
-                    if (item.Address != null && !string.IsNullOrEmpty(item.Address))
-                        cc = cc + item.Address + ";";
-                }
-
-                if (cc.EndsWith(";"))
-                    cc = cc.Substring(0, cc.Length - 1);
-            }
-
-            return cc;
-        }
-
-        public static string GetBccList(MimeMessage message)
-        {
-            string bcc = string.Empty;
-            if (message.Headers != null)
-            {
-                foreach (var item in message.Bcc.Mailboxes)
-                {
-                    if (item.Address != null && !string.IsNullOrEmpty(item.Address))
-                        bcc = bcc + item.Address + ";";
-                }
-
-                if (bcc.EndsWith(";"))
-                    bcc = bcc.Substring(0, bcc.Length - 1);
-            }
-
-            return bcc;
-        }
-
-        public static string GetToList(MimeMessage message)
-        {
-            string to = string.Empty;
-            if (message.Headers != null)
-            {
-                foreach (var item in message.To.Mailboxes)
-                {
-                    if (item.Address != null && !string.IsNullOrEmpty(item.Address))
-                        to = to + item.Address + ";";
-                }
-
-                if (to.EndsWith(";"))
-                    to = to.Substring(0, to.Length - 1);
-            }
-
-            return to;
         }
     }
 }

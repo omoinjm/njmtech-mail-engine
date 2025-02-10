@@ -5,7 +5,7 @@ namespace Mail.Engine.Service.Infrastructure.DbQueries
     public class RepositoryQuery
     {
         #region Select Queries
-        public static string GetMailboxes()
+        public static string GetMailboxesQuery()
         {
             var query = $@"
                 
@@ -40,7 +40,7 @@ namespace Mail.Engine.Service.Infrastructure.DbQueries
                     smtp.code_challange AS CodeChallange,
                     smtp.refresh_token AS RefreshToken
 
-                FROM  mail.mailbox mb
+                FROM mail.mailbox mb
                 LEFT JOIN mail.imap_configuration imap on imap.id = mb.imap_id
                 LEFT JOIN mail.smtp_configuration smtp on smtp.id = mb.smtp_id
 
@@ -51,7 +51,7 @@ namespace Mail.Engine.Service.Infrastructure.DbQueries
             return query;
         }
 
-        public static string LoadMessageLogs()
+        public static string GetMessageLogsQuery()
         {
             var query = $@"
                 
@@ -91,16 +91,17 @@ namespace Mail.Engine.Service.Infrastructure.DbQueries
 
                 LEFT JOIN mail.message_log_type t ON m.message_log_type_id = t.id
                 LEFT JOIN mail.message_log_status s ON m.message_log_status_id = s.id
-                LEFT JOIN mail.smtp_configuration sc ON m.smtp_configuration_id = sc.id;
+                LEFT JOIN mail.smtp_configuration sc ON m.smtp_id = sc.id
 
-                WHERE m.message_log_type_code = {EnumMessageLog.MessageLogTypeCode} AND m.message_log_status_id = {EnumMessageLog.MessageLofStatusCode}
+
+                WHERE t.code = '{EnumMessageTypeLog.Email}' AND s.code = '{EnumMessageStatusLog.Pending}'
 
             ";
 
             return query;
         }
 
-        public static string GetMessages()
+        public static string GetMessagesQuery()
         {
             var query = $@"
                 
@@ -132,14 +133,58 @@ namespace Mail.Engine.Service.Infrastructure.DbQueries
             return query;
         }
 
+        public static string GetMessageAttachmentsQuery()
+        {
+            var query = $@"
+                
+                SELECT
+                    
+                    a.id AS MessageLogAttachmentId,
+                    a.message_log_id AS MessageLogId,
+                    a.attachment_url AS AttachmentUrl,
+                    a.file_name AS FileName,
+                    a.content_id AS ContentId,
+                    a.is_inline_image AS IsInlineImage,
+                    a.attachment_data AS AttachmentData
+
+                FROM mail.message_log_attachment a
+                
+                LEFT JOIN mail.message_log m on a.message_log_id = m.id
+
+                WHERE a.message_log_id = @p_mail_message_log_id
+                
+            ";
+
+            return query;
+        }
         #endregion
 
         #region Update Queries
+        public static string UpdateStatusQuery()
+        {
+            var query = @" 
 
+                UPDATE mail.message_log 
+                SET 
+                
+                    message_log_status_id = sq.id,
+                    date_sent = @p_mail_date_sent,
+                    status_message = @p_mail_status_message,
+                    from_field = @p_mail_from_field,
+                    from_name = @p_mail_from_name
+                
+                FROM (SELECT id FROM mail.message_log_status WHERE code = @p_mail_message_log_status_code) AS sq
+
+                WHERE mail.message_log.id = @p_mail_message_log_id;
+
+			";
+
+            return query;
+        }
         #endregion
 
         #region Procedure Execution
-        public static string MailboxInsert()
+        public static string MailboxInsertQuery()
         {
             var query = @"
                CALL mail.message_insert(
@@ -153,7 +198,7 @@ namespace Mail.Engine.Service.Infrastructure.DbQueries
         }
 
 
-        public static string InReplyToInsert()
+        public static string InReplyToInsertQuery()
         {
             var query = @"
 
@@ -164,7 +209,7 @@ namespace Mail.Engine.Service.Infrastructure.DbQueries
             return query;
         }
 
-        public static string ReferenceInsert()
+        public static string ReferenceInsertQuery()
         {
             var query = @"
 

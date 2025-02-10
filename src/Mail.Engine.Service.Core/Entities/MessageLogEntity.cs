@@ -16,7 +16,7 @@ namespace Mail.Engine.Service.Core.Entities
         public System.DateTime? DateSent { get; set; }
         public System.String? StatusMessage { get; set; }
         public System.DateTime CreatedAt { get; set; }
-        public System.Int32 CreatedBy { get; set; }
+        public System.String? CreatedBy { get; set; }
         public System.String? MessageLogTypeName { get; set; }
         public System.String? MessageLogTypeCode { get; set; }
         public System.String? MessageLogStatusName { get; set; }
@@ -28,5 +28,7 @@ namespace Mail.Engine.Service.Core.Entities
         public System.Int32? Port { get; set; }
         public System.String? SmtpEmailAddress { get; set; }
         public System.String? SmtpPassword { get; set; }
+        public System.Boolean? PickupDirectoryFromIis { get; set; }
+        public System.String PickupDirectoryLocation { get; set; }
     }
 }

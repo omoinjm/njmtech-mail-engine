@@ -5,5 +5,7 @@ namespace Mail.Engine.Service.Core.Services
         string ConnectionString();
         string BlobbStorageSASUrl();
         string BlobContainerName();
+        string TestEmailAddress();
+        bool EmailTesting();
     }
 }

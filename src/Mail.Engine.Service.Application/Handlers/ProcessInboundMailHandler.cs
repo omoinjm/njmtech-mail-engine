@@ -1,6 +1,9 @@
+using Mail.Engine.Service.Application.Mapper;
 using Mail.Engine.Service.Application.Queries;
+using Mail.Engine.Service.Application.Response;
 using Mail.Engine.Service.Core.Entities;
 using Mail.Engine.Service.Core.Repositories;
+using Mail.Engine.Service.Core.Results;
 using Mail.Engine.Service.Core.Services.InboundMail;
 using MailKit;
 using MailKit.Net.Imap;
@@ -14,7 +17,7 @@ namespace Mail.Engine.Service.Application.Handlers
         IEmailAuthenticator authenticator,
         IEmailFolderManager folderManager
 
-    ) : IRequestHandler<GetInboundQuery, bool>
+    ) : IRequestHandler<GetInboundQuery, MailResponse>
     {
         private readonly IMailRepository _repository = repository;
         private readonly IEmailProcessor _processor = processor;
@@ -23,27 +26,29 @@ namespace Mail.Engine.Service.Application.Handlers
 
         private const string MOVE_FOLDER_NAME = "WalletyRead";
 
-        public async Task<bool> Handle(GetInboundQuery request, CancellationToken cancellationToken)
+        public async Task<MailResponse> Handle(GetInboundQuery request, CancellationToken cancellationToken)
         {
-            try
-            {
-                var mailboxes = await _repository.GetMailboxes();
+            var result = new MailResult();
 
-                foreach (var mailbox in mailboxes)
-                {
-                    await this.GetMailsAsync(mailbox);
-                }
+            var mailboxes = await _repository.GetMailboxes();
 
-                return true;
-            }
-            catch
+            foreach (var mailbox in mailboxes)
             {
-                return false;
+                var mailboxResult = await GetMailsAsync(mailbox);
+                result.TotalMessagesProcessed += mailboxResult.TotalMessagesProcessed;
+                result.TotalMessagesFailed += mailboxResult.TotalMessagesFailed;
+                result.ErrorMessages.AddRange(mailboxResult.ErrorMessages);
             }
+
+            var response = LazyMapper.Mapper.Map<MailResponse>(result);
+
+            return response;
         }
 
-        private async Task GetMailsAsync(MailboxEntity mailbox)
+        private async Task<MailResult> GetMailsAsync(MailboxEntity mailbox)
         {
+            var result = new MailResult();
+
             using var client = new ImapClient();
 
             client.ServerCertificateValidationCallback = (s, c, h, e) => true;
@@ -66,13 +71,31 @@ namespace Mail.Engine.Service.Application.Handlers
 
                 foreach (var message in messages)
                 {
-                    await _processor.ProcessEmailAsync(message, inbox, destinationFolder, mailbox);
+                    try
+                    {
+                        bool isProcessed = await _processor.ProcessEmailAsync(message, inbox, destinationFolder, mailbox);
+                        result.TotalMessagesProcessed++;
+
+                        if (!isProcessed)
+                            result.TotalMessagesFailed++;
+                    }
+                    catch (Exception ex)
+                    {
+                        result.TotalMessagesFailed++;
+                        result.ErrorMessages.Add(ex.Message);
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                result.ErrorMessages.Add(ex.Message);
             }
             finally
             {
                 await client.DisconnectAsync(true);
             }
+
+            return result;
         }
     }
 }

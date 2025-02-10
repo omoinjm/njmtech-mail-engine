@@ -14,7 +14,7 @@ namespace Mail.Engine.Service.Infrastructure.Services.InboundMail
         private readonly IAttachmentProcessor _attachmentProcessor = attachmentProcessor;
         private readonly IMailRepository _mailRepository = mailRepository;
 
-        public async Task ProcessEmailAsync(
+        public async Task<bool> ProcessEmailAsync(
             IMessageSummary messageSummary,
             IMailFolder sourceFolder,
             IMailFolder destinationFolder,
@@ -27,34 +27,32 @@ namespace Mail.Engine.Service.Infrastructure.Services.InboundMail
             {
                 await sourceFolder.AddFlagsAsync(messageSummary.UniqueId, MessageFlags.Seen, true);
                 await sourceFolder.MoveToAsync(messageSummary.UniqueId, destinationFolder);
-
-                // _logger.LogInformation($"Processed email: {messageSummary.UniqueId}");
             }
+
+            return success;
         }
 
         private async Task<bool> SaveMailToDatabaseAsync(MimeMessage message, MailboxEntity mailbox)
         {
             var mailMessage = _messageBuilder.BuildMailMessage(message);
 
-            var mailMessageId = await _mailRepository.UpsertMailMessageAsync(mailMessage, mailbox);
+            var mailMessageId = await _mailRepository.CreateMailMessageAsync(mailMessage, mailbox);
 
             if (mailMessageId == Guid.Empty)
-            {
                 return false;
-            }
 
             // await _attachmentProcessor.ProcessAttachmentsAsync(message, mailMessageId, mailbox);
 
             // if (message.InReplyTo != null)
             // {
-            //     await _mailRepository.UpsertInReplyToAsync(mailMessageId, message.InReplyTo);
+            //     await _mailRepository.CreateInReplyToAsync(mailMessageId, message.InReplyTo);
             // }
 
             // if (message.References != null)
             // {
             //     foreach (var reference in message.References)
             //     {
-            //         await _mailRepository.UpsertReferenceMailAsync(mailMessageId, reference);
+            //         await _mailRepository.CreateReferenceMailAsync(mailMessageId, reference);
             //     }
             // }
 

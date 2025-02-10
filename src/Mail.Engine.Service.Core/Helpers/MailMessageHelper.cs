@@ -1,6 +1,6 @@
 using Mail.Engine.Service.Core.Entities;
 
-namespace Mail.Engine.Service.Infrastructure.Helpers
+namespace Mail.Engine.Service.Core.Helpers
 {
     public class MailMessageHelper
     {

@@ -5,7 +5,7 @@ namespace Mail.Engine.Service.Core.Services.InboundMail
 {
     public interface IEmailProcessor
     {
-        Task ProcessEmailAsync(
+        Task<bool> ProcessEmailAsync(
             IMessageSummary messageSummary,
             IMailFolder sourceFolder,
             IMailFolder destinationFolder,

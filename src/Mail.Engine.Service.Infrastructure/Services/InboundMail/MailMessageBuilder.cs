@@ -13,11 +13,11 @@ namespace Mail.Engine.Service.Infrastructure.Services.InboundMail
             {
                 Subject = message.Subject,
                 DateSent = message.Date.LocalDateTime,
-                CcField = MailboxHelper.GetCcList(message),
-                BccField = MailboxHelper.GetBccList(message),
-                SentTo = MailboxHelper.GetToList(message),
-                TextHtml = MailboxHelper.GetHtmlInMessage(message),
-                TextPlain = MailboxHelper.GetPlainTextInMessage(message),
+                CcField = message.GetCcList(),
+                BccField = message.GetBccList(),
+                SentTo = message.GetToList(),
+                TextHtml = message.GetHtmlInMessage(),
+                TextPlain = message.GetPlainTextInMessage(),
                 ImapMessageId = message.MessageId,
                 MimeVersion = message.MimeVersion.ToString()
             };
