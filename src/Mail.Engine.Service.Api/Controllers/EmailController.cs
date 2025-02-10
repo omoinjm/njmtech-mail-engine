@@ -2,6 +2,7 @@ using System.Net;
 using Mail.Engine.Service.Application.Queries;
 using Mail.Engine.Service.Application.Response;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Mail.Engine.Service.Api.Controllers
@@ -28,6 +29,15 @@ namespace Mail.Engine.Service.Api.Controllers
             var result = await _mediator.Send(new GetOutboundQuery());
 
             return Ok(result);
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("Ping")]
+        [ProducesResponseType(typeof(object), (int)HttpStatusCode.OK)]
+        public IActionResult Ping()
+        {
+            return Ok(new { message = "Pong", timestamp = DateTime.Now });
         }
     }
 }

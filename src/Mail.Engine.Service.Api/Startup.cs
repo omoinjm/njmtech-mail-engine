@@ -1,6 +1,7 @@
 using HealthChecks.UI.Client;
 using Mail.Engine.Service.Api.dto;
 using Mail.Engine.Service.Api.Exceptions;
+using Mail.Engine.Service.Api.Services;
 using Mail.Engine.Service.Application.Configuration;
 using Mail.Engine.Service.Application.Handlers;
 using Mail.Engine.Service.Core.Repositories;
@@ -54,6 +55,9 @@ namespace Mail.Engine.Service.Api
             services.AddAutoMapper(typeof(Startup));
 
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(ProcessInboundMailHandler).Assembly));
+
+            // Register Background Service
+            services.AddHostedService<RecurringTaskService>();
 
             services.AddMemoryCache();
 
