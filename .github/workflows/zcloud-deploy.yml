@@ -29,8 +29,6 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: zcloudws/zcloud-cli
-      env:
-        ZCLOUD_USER_TOKEN: ${{ secrets.ZCLOUD_USER_TOKEN }}
 
     steps:
       - name: Checkout repository
