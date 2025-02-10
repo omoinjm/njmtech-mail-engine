@@ -3,6 +3,12 @@ FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 
+# Expose the web and ssl port
+EXPOSE 80 
+EXPOSE 443
+EXPOSE 8080
+EXPOSE 5135
+
 COPY ["./src/Mail.Engine.Service.Api/Mail.Engine.Service.Api.csproj", "./"]
 COPY ["./src/Mail.Engine.Service.Application/Mail.Engine.Service.Application.csproj", "./"]
 COPY ["./src/Mail.Engine.Service.Core/Mail.Engine.Service.Core.csproj", "./"]

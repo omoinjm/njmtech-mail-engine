@@ -22,7 +22,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Build Docker image
-        run: docker build --rm -t wallety/wallety-portal:latest .
+        run: docker build --rm -t wallety/wallety-mail-service:latest .
 
   deploy:
     needs: build-and-test
