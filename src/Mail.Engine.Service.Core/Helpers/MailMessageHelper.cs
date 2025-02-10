@@ -27,5 +27,18 @@ namespace Mail.Engine.Service.Core.Helpers
                 p_new_mail_message_id = default(Guid)
             };
         }
+
+        public static object UpdateStatusParameters(MessageLogEntity messageLog)
+        {
+            return new
+            {
+                p_mail_message_log_id = messageLog.MessageLogId,
+                p_mail_message_log_status_code = messageLog.MessageLogStatusCode,
+                p_mail_date_sent = messageLog.DateSent,
+                p_mail_status_message = messageLog.StatusMessage,
+                p_mail_from_field = messageLog.FromField,
+                p_mail_from_name = messageLog.FromName
+            };
+        }
     }
 }

@@ -72,6 +72,8 @@ namespace Mail.Engine.Service.Api
             });
 
             // Inbound Mail Service
+            services.AddScoped<IInboundMailService, InboundMailService>();
+
             services.AddScoped<IEmailProcessor, StandardEmailProcessor>();
 
             services.AddScoped<IAttachmentProcessor, AttachmentProcessor>();
@@ -81,6 +83,8 @@ namespace Mail.Engine.Service.Api
             services.AddScoped<IMailMessageBuilder, MailMessageBuilder>();
 
             // Outbound Mail Service
+            services.AddScoped<IOutboundMailService, OutboundMailService>();
+
             services.AddScoped<IEmailAttachmentProcessor, EmailAttachmentProcessor>();
             services.AddScoped<IEmailBuilder, EmailBuilder>();
             services.AddScoped<ISmtpClientFactory, SmtpClientFactory>();
@@ -95,8 +99,6 @@ namespace Mail.Engine.Service.Api
             {
                 services.AddSingleton<IConfigurationService, ConfigurationService>();
             }
-
-
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
