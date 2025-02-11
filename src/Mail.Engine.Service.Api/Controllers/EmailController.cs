@@ -39,5 +39,14 @@ namespace Mail.Engine.Service.Api.Controllers
         {
             return Ok(new { message = "Pong", timestamp = DateTime.Now });
         }
+
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("Env")]
+        [ProducesResponseType(typeof(object), (int)HttpStatusCode.OK)]
+        public IActionResult Env()
+        {
+            return Ok(new { message = $"This is a test: {Environment.GetEnvironmentVariable("TEST_VARIABLE")}", timestamp = DateTime.Now });
+        }
     }
 }

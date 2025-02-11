@@ -284,6 +284,7 @@ Dockerfile
 .env
 .git/
 local.settings.json
+appsettings.json
 
 .gitignore
 
