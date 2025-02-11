@@ -35,7 +35,7 @@ namespace Mail.Engine.Service.Api.Services
                     _logger.LogError(ex, "Error executing recurring tasks.");
                 }
 
-                await Task.Delay(1000, stoppingToken); // Run every second
+                await Task.Delay(10000, stoppingToken); // Run every second
             }
         }
     }
