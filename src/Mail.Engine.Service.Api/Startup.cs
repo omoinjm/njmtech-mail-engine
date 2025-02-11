@@ -70,8 +70,11 @@ namespace Mail.Engine.Service.Api
             services.AddScoped<ISqlSelector>(provider =>
             {
                 var configuration = provider.GetRequiredService<IConfiguration>();
+                var conString = Environment.GetEnvironmentVariable("PGSQL_CONNECTION_STRING")
+                    ?? configuration.GetConnectionString("PGSQL_CONNECTION_STRING");
+
                 return new SqlSelector(
-                    configuration.GetConnectionString("PGSQL_CONNECTION_STRING")!
+                    conString!
                 );
             });
 
