@@ -48,4 +48,4 @@ VALUES
     </table>',
     (SELECT id FROM mail.message_log_type WHERE code = 'E'),
     (SELECT id FROM mail.message_log_status WHERE code = 'P'),
-    (SELECT id FROM mail.smtp_configuration WHERE code = 'SNE'));
+    (SELECT id FROM mail.smtp_configuration WHERE code = 'DEF'));
