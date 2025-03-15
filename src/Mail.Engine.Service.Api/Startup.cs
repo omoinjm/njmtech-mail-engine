@@ -21,20 +21,19 @@ namespace Mail.Engine.Service.Api
 {
     public class Startup(IConfiguration configuration, IWebHostEnvironment env)
     {
-        public IConfiguration Configuration = configuration;
-        private IWebHostEnvironment _env = env;
+        private readonly IConfiguration _configuration = configuration;
+        private readonly IWebHostEnvironment _env = env;
 
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCors(options => options.AddPolicy("ApiCorsPolicy", builder =>
             {
                 builder.AllowAnyOrigin()
-                        .AllowAnyMethod()
-                        .AllowAnyHeader();
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
             }));
 
             services.AddControllers();
-
             services.AddApiVersioning();
             services.AddHealthChecks();
 
@@ -70,12 +69,11 @@ namespace Mail.Engine.Service.Api
             services.AddScoped<ISqlSelector>(provider =>
             {
                 var configuration = provider.GetRequiredService<IConfiguration>();
+
                 var conString = Environment.GetEnvironmentVariable("PGSQL_CONNECTION_STRING")
                     ?? configuration.GetConnectionString("PGSQL_CONNECTION_STRING");
 
-                return new SqlSelector(
-                    conString!
-                );
+                return new SqlSelector(conString!);
             });
 
             // Inbound Mail Service
@@ -96,16 +94,9 @@ namespace Mail.Engine.Service.Api
             services.AddScoped<IEmailBuilder, EmailBuilder>();
             services.AddScoped<ISmtpClientFactory, SmtpClientFactory>();
 
+            if (_env.IsProduction()) services.AddSingleton<IConfigurationService, ConfigurationService>();
 
-            if (_env.IsProduction())
-            {
-                services.AddSingleton<IConfigurationService, ConfigurationService>();
-            }
-
-            if (_env.IsDevelopment())
-            {
-                services.AddSingleton<IConfigurationService, ConfigurationService>();
-            }
+            if (_env.IsDevelopment()) services.AddSingleton<IConfigurationService, ConfigurationService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

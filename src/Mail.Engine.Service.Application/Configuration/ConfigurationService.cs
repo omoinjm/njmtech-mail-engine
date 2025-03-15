@@ -7,44 +7,18 @@ namespace Mail.Engine.Service.Application.Configuration
     {
         private readonly IConfiguration _configuration = configuration;
 
-        public string ConnectionString()
-        {
-            return Environment.GetEnvironmentVariable("PGSQL_CONNECTION_STRING")
-                ?? GetConnectionString("PGSQL_CONNECTION_STRING");
-        }
+        public string ConnectionString() => GetConnectionString("PGSQL_CONNECTION_STRING");
 
-        public string BlobbStorageSASUrl()
-        {
-            return Environment.GetEnvironmentVariable("AZURE_BLOB_STORAGE_SAS_URL")
-                ?? GetValue("AZURE_BLOB_STORAGE_SAS_URL")!;
-        }
+        public string BlobbStorageSASUrl() => GetValue("AZURE_BLOB_STORAGE_SAS_URL")!;
 
-        public string BlobContainerName()
-        {
-            return Environment.GetEnvironmentVariable("AZURE_BLOB_CONTAINER_NAME")
-                ?? GetValue("AZURE_BLOB_CONTAINER_NAME")!;
-        }
+        public string BlobContainerName() => GetValue("AZURE_BLOB_CONTAINER_NAME")!;
 
-        public string TestEmailAddress()
-        {
-            return Environment.GetEnvironmentVariable("TEST_EMAIL_ADDRESS")
-                ?? GetValue("TEST_EMAIL_ADDRESS")!;
-        }
+        public string TestEmailAddress() => GetValue("TEST_EMAIL_ADDRESS")!;
 
-        public bool EmailTesting()
-        {
-            return Environment.GetEnvironmentVariable("EMAIL_TESTING") == "true"
-                || GetValue("EMAIL_TESTING") == "true";
-        }
+        public bool EmailTesting() => GetValue("EMAIL_TESTING") == "true";
 
-        private string GetValue(string configName)
-        {
-            return _configuration.GetValue<string>($"Values:{configName}")!;
-        }
+        private string GetValue(string configName) => _configuration.GetValue<string>($"Values:{configName}") ?? Environment.GetEnvironmentVariable(configName)!;
 
-        private string GetConnectionString(string configName)
-        {
-            return _configuration.GetValue<string>($"ConnectionStrings:{configName}")!;
-        }
+        private string GetConnectionString(string configName) => _configuration.GetValue<string>($"ConnectionStrings:{configName}") ?? Environment.GetEnvironmentVariable(configName)!;
     }
 }
