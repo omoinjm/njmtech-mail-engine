@@ -25,7 +25,7 @@ namespace Mail.Engine.Service.Infrastructure.Services
             {
                 using var client = _smtpClientFactory.CreateSmtpClient(messageLog);
 
-                await client.SendMailAsync(message);
+                await client.SendAsync((MimeKit.MimeMessage)message); //SendMailAsync(message);
 
                 result.TotalMessagesProcessed++;
             }

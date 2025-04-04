@@ -1,0 +1,40 @@
+name: Docs Deploy
+
+on:
+  push:
+    branches: ['development']
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    container:
+      image: docker:latest
+    steps:
+      - name: Start Docker-in-Docker
+        run: |
+          dockerd-entrypoint.sh &
+          sleep 10
+
+      - name: Install Docker CLI
+        run: apk add --no-cache docker-cli
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build Docker image
+        run: docker build --rm -t wallety/wallety-mail-service:latest .
+
+  deploy:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    container:
+      image: zcloudws/zcloud-cli
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Deploy with Quave Cloud CLI
+        env:
+          ZCLOUD_USER_TOKEN: ${{ secrets.ZCLOUD_USER_TOKEN }}
+        run: zcloud deploy --env "wallety-walletymailengine-staging" --dir "."

@@ -30,5 +30,9 @@ namespace Mail.Engine.Service.Core.Entities
         public System.String? SmtpPassword { get; set; }
         public System.Boolean? PickupDirectoryFromIis { get; set; }
         public System.String PickupDirectoryLocation { get; set; }
+        public System.String? AppId { get; set; }
+        public System.String? TenantId { get; set; }
+        public System.String? SecretId { get; set; }
+        public System.Boolean IsOutlook { get; set; }
     }
 }

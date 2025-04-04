@@ -1,0 +1,81 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{85853002-C919-4B97-BF4C-3A5AF243752A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mail.Engine.Service.Api", "src\Mail.Engine.Service.Api\Mail.Engine.Service.Api.csproj", "{A026753D-10BF-4B7B-9214-DCE74FB63867}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mail.Engine.Service.Application", "src\Mail.Engine.Service.Application\Mail.Engine.Service.Application.csproj", "{757A718F-46B1-43EF-8A7C-B809C4FFF6BA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mail.Engine.Service.Core", "src\Mail.Engine.Service.Core\Mail.Engine.Service.Core.csproj", "{AF0A827A-AB91-4250-AA02-755C6E1686A1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mail.Engine.Service.Infrastructure", "src\Mail.Engine.Service.Infrastructure\Mail.Engine.Service.Infrastructure.csproj", "{C63781E6-09B8-4F5B-9BC1-2F34DDD1EA08}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{27FF9D52-37D6-489C-B2A8-9419474DB764}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UnitTests", "UnitTests", "{5C957617-E789-49C9-B24D-640F0000180A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mail.Engine.Service.Api.UnitTests", "tests\UnitTests\Mail.Engine.Service.Api.UnitTests\Mail.Engine.Service.Api.UnitTests.csproj", "{A32A3546-4872-4344-A9E4-52DBCF47D229}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mail.Engine.Service.Application.UnitTests", "tests\UnitTests\Mail.Engine.Service.Application.UnitTests\Mail.Engine.Service.Application.UnitTests.csproj", "{D8E10AC5-1829-4465-8ABD-36FC32F5874C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mail.Engine.Service.Core.UnitTests", "tests\UnitTests\Mail.Engine.Service.Core.UnitTests\Mail.Engine.Service.Core.UnitTests.csproj", "{EA962F69-D4F6-4C03-A05A-E6971F0F4289}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mail.Engine.Service.Infrastructure.UnitTests", "tests\UnitTests\Mail.Engine.Service.Infrastructure.UnitTests\Mail.Engine.Service.Infrastructure.UnitTests.csproj", "{D4C1A83A-AE82-473B-A35F-7A0ED0DF1217}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A026753D-10BF-4B7B-9214-DCE74FB63867}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A026753D-10BF-4B7B-9214-DCE74FB63867}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A026753D-10BF-4B7B-9214-DCE74FB63867}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A026753D-10BF-4B7B-9214-DCE74FB63867}.Release|Any CPU.Build.0 = Release|Any CPU
+		{757A718F-46B1-43EF-8A7C-B809C4FFF6BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{757A718F-46B1-43EF-8A7C-B809C4FFF6BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{757A718F-46B1-43EF-8A7C-B809C4FFF6BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{757A718F-46B1-43EF-8A7C-B809C4FFF6BA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF0A827A-AB91-4250-AA02-755C6E1686A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF0A827A-AB91-4250-AA02-755C6E1686A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF0A827A-AB91-4250-AA02-755C6E1686A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF0A827A-AB91-4250-AA02-755C6E1686A1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C63781E6-09B8-4F5B-9BC1-2F34DDD1EA08}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C63781E6-09B8-4F5B-9BC1-2F34DDD1EA08}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C63781E6-09B8-4F5B-9BC1-2F34DDD1EA08}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C63781E6-09B8-4F5B-9BC1-2F34DDD1EA08}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A32A3546-4872-4344-A9E4-52DBCF47D229}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A32A3546-4872-4344-A9E4-52DBCF47D229}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A32A3546-4872-4344-A9E4-52DBCF47D229}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A32A3546-4872-4344-A9E4-52DBCF47D229}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D8E10AC5-1829-4465-8ABD-36FC32F5874C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8E10AC5-1829-4465-8ABD-36FC32F5874C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8E10AC5-1829-4465-8ABD-36FC32F5874C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8E10AC5-1829-4465-8ABD-36FC32F5874C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA962F69-D4F6-4C03-A05A-E6971F0F4289}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA962F69-D4F6-4C03-A05A-E6971F0F4289}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA962F69-D4F6-4C03-A05A-E6971F0F4289}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA962F69-D4F6-4C03-A05A-E6971F0F4289}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D4C1A83A-AE82-473B-A35F-7A0ED0DF1217}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4C1A83A-AE82-473B-A35F-7A0ED0DF1217}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4C1A83A-AE82-473B-A35F-7A0ED0DF1217}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4C1A83A-AE82-473B-A35F-7A0ED0DF1217}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{A026753D-10BF-4B7B-9214-DCE74FB63867} = {85853002-C919-4B97-BF4C-3A5AF243752A}
+		{757A718F-46B1-43EF-8A7C-B809C4FFF6BA} = {85853002-C919-4B97-BF4C-3A5AF243752A}
+		{AF0A827A-AB91-4250-AA02-755C6E1686A1} = {85853002-C919-4B97-BF4C-3A5AF243752A}
+		{C63781E6-09B8-4F5B-9BC1-2F34DDD1EA08} = {85853002-C919-4B97-BF4C-3A5AF243752A}
+		{5C957617-E789-49C9-B24D-640F0000180A} = {27FF9D52-37D6-489C-B2A8-9419474DB764}
+		{A32A3546-4872-4344-A9E4-52DBCF47D229} = {5C957617-E789-49C9-B24D-640F0000180A}
+		{D8E10AC5-1829-4465-8ABD-36FC32F5874C} = {5C957617-E789-49C9-B24D-640F0000180A}
+		{EA962F69-D4F6-4C03-A05A-E6971F0F4289} = {5C957617-E789-49C9-B24D-640F0000180A}
+		{D4C1A83A-AE82-473B-A35F-7A0ED0DF1217} = {5C957617-E789-49C9-B24D-640F0000180A}
+	EndGlobalSection
+EndGlobal
