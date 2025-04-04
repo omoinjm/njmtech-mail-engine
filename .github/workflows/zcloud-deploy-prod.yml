@@ -37,4 +37,4 @@ jobs:
       - name: Deploy with Quave Cloud CLI
         env:
           ZCLOUD_USER_TOKEN: ${{ secrets.ZCLOUD_USER_TOKEN }}
-        run: zcloud deploy --env "wallety-walletymailengine-staging" --dir "."
+        run: zcloud deploy --env "wallety-walletymailengine-production" --dir "."
