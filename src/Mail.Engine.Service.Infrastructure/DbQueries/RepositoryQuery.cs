@@ -85,7 +85,10 @@ namespace Mail.Engine.Service.Infrastructure.DbQueries
                     sc.ssl,
                     sc.port,
                     sc.email_address AS SmtpEmailAddress,
-                    sc.password AS SmtpPassword
+                    sc.password AS SmtpPassword,
+                    sc.app_id AS AppId,
+                    sc.tenant_id AS TenantId,
+                    sc.secret_id AS SecretId
 
                 FROM mail.message_log m
 

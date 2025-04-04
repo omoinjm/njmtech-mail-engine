@@ -14,7 +14,7 @@ namespace Mail.Engine.Service.Infrastructure.Services.InboundMail
 
         public async Task AuthenticateAsync(IImapClient client, MailboxEntity mailbox)
         {
-            var accessToken = MailboxHelper.GetAccessToken(mailbox, SCOPE_EMAIL, SCOPE_OPEN_ID, SCOPE_OFFLINE_ACCESS, SCOPE_IMAP);
+            var accessToken = MailboxHelper.GetAccessTokenImap(mailbox, SCOPE_EMAIL, SCOPE_OPEN_ID, SCOPE_OFFLINE_ACCESS, SCOPE_IMAP);
 
             await client.AuthenticateAsync(accessToken);
         }
