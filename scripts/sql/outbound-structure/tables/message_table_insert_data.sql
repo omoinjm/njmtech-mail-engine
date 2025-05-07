@@ -11,7 +11,8 @@ ON CONFLICT (code) DO NOTHING;
 INSERT INTO mail.message_log_type (code, name)
 VALUES
     ('E', 'Email'),
-    ('S', 'SMS')
+    ('S', 'SMS'),
+    ('W', 'Wati')
 ON CONFLICT (code) DO NOTHING;
 
 -- Insert Message Log Header
