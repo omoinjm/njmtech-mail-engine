@@ -20,6 +20,7 @@ namespace Mail.Engine.Service.Application.Handlers
         public async Task<List<WatiApiResponse>> Handle(GetWatiQuery request, CancellationToken cancellationToken)
         {
             var result = new WatiApiResult();
+
             var response = new List<WatiApiResponse>();
 
             var watiConfig = await _repository.GetWatiConfig();
