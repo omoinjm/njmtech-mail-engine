@@ -1,4 +1,5 @@
 using Mail.Engine.Service.Core.Entities;
+using Mail.Engine.Service.Core.Results.Wati;
 
 namespace Mail.Engine.Service.Core.Helpers
 {
@@ -38,6 +39,15 @@ namespace Mail.Engine.Service.Core.Helpers
                 p_mail_status_message = messageLog.StatusMessage,
                 p_mail_from_field = messageLog.FromField,
                 p_mail_from_name = messageLog.FromName
+            };
+        }
+
+        public static object InsertWatiResponseParameters(Guid messageLogId, string responseJson)
+        {
+            return new
+            {
+                p_message_log_id = messageLogId,
+                p_response_json = responseJson
             };
         }
     }

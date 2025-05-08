@@ -1,5 +1,7 @@
 using Mail.Engine.Service.Core.Entities;
+using Mail.Engine.Service.Core.Helpers;
 using Mail.Engine.Service.Core.Repositories;
+using Mail.Engine.Service.Core.Results.Wati;
 using Mail.Engine.Service.Core.Services;
 using Mail.Engine.Service.Infrastructure.DbQueries;
 
@@ -21,6 +23,16 @@ namespace Mail.Engine.Service.Infrastructure.Repositories
             var items = await _sqlContext.SelectQuery<MessageLogEntity>(WatiQuery.GetMessageLogsQuery());
 
             return [.. items];
+        }
+
+
+        public async Task<bool> InsertJsonData(Guid messageLogId, string responseJson)
+        {
+            var parameters = MailMessageHelper.InsertWatiResponseParameters(messageLogId, responseJson);
+
+            var result = await _sqlContext.ExecuteAsyncQuery(WatiQuery.InsertJsonData(), parameters);
+
+            return result;
         }
     }
 }

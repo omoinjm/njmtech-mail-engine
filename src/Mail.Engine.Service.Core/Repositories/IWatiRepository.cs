@@ -7,5 +7,7 @@ namespace Mail.Engine.Service.Core.Repositories
         Task<WatiConfigEntity> GetWatiConfig();
 
         Task<List<MessageLogEntity>> GetMessageLogs();
+
+        Task<bool> InsertJsonData(Guid messageLogId, string responseJson);
     }
 }

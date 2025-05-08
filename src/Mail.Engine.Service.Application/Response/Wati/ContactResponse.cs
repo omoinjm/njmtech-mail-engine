@@ -4,7 +4,7 @@ namespace Mail.Engine.Service.Application.Response.Wati
     {
         public string? Id { get; set; }
         public string? TenantId { get; set; }
-        public string? Waid { get; set; }
+        public string? WAid { get; set; }
         public string? FirstName { get; set; }
         public string? FullName { get; set; }
         public string? Phone { get; set; }

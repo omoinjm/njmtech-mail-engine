@@ -141,3 +141,14 @@ CREATE TABLE IF NOT EXISTS mail.message_log_attachment (
     CONSTRAINT fk_message_log_attachment FOREIGN KEY (message_log_id)
         REFERENCES mail.message_log (id)
 );
+
+CREATE TABLE IF NOT EXISTS mail.message_log_wati_response (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    
+    message_log_id UUID NOT NULL,
+
+    response_json TEXT NOT NULL,
+
+    CONSTRAINT fk_message_log_id FOREIGN KEY (message_log_id)
+        REFERENCES mail.message_log (id)
+);

@@ -20,13 +20,14 @@ namespace Mail.Engine.Service.Application.Handlers
         public async Task<List<WatiApiResponse>> Handle(GetWatiQuery request, CancellationToken cancellationToken)
         {
             var result = new WatiApiResult();
+
             var response = new List<WatiApiResponse>();
 
             var watiConfig = await _repository.GetWatiConfig();
 
             if (watiConfig != null)
             {
-                var messageList = _repository.GetMessageLogs().Result.Where(x => x.MessageLogTypeName == EnumMessageTypeLog.WATI).ToList();
+                var messageList = await _repository.GetMessageLogs();
 
                 if (messageList != null && messageList.Count > 0)
                 {
@@ -39,6 +40,8 @@ namespace Mail.Engine.Service.Application.Handlers
                         result = await _watiService.SendMessage(message.ToField!, message.Body!);
 
                         response.Add(LazyMapper.Mapper.Map<WatiApiResponse>(result));
+
+                        await _watiService.UpdateMessageStatusAsync(message, result);
                     }
                 }
             }
