@@ -4,7 +4,8 @@ using Mail.Engine.Service.Application.Response;
 using Mail.Engine.Service.Core.Repositories;
 using Mail.Engine.Service.Core.Results;
 using Mail.Engine.Service.Core.Services;
-using Mail.Engine.Service.Core.Services.OutboundMail;
+using Mail.Engine.Service.Core.Services.Mail;
+using Mail.Engine.Service.Core.Services.Mail.OutboundMail;
 using MediatR;
 
 namespace Mail.Engine.Service.Application.Handlers

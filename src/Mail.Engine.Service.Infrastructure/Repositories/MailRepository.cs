@@ -13,7 +13,7 @@ namespace Mail.Engine.Service.Infrastructure.Repositories
         #region Inbound
         public async Task<List<MailboxEntity>> GetMailboxes()
         {
-            var items = await _sqlContext.SelectQuery<MailboxEntity>(RepositoryQuery.GetMailboxesQuery());
+            var items = await _sqlContext.SelectQuery<MailboxEntity>(MailQuery.GetMailboxesQuery());
 
             return [.. items];
         }
@@ -22,7 +22,7 @@ namespace Mail.Engine.Service.Infrastructure.Repositories
         {
             var parameters = MailMessageHelper.CreateMailMessageParameters(message, mailbox);
 
-            return await _sqlContext.ExecuteScalarAsyncQuery<Guid>(RepositoryQuery.MailboxInsertQuery(), parameters);
+            return await _sqlContext.ExecuteScalarAsyncQuery<Guid>(MailQuery.MailboxInsertQuery(), parameters);
         }
 
         public async Task CreateInReplyToAsync(string mailMessageId, string inReplyTo)
@@ -33,7 +33,7 @@ namespace Mail.Engine.Service.Infrastructure.Repositories
                 p_mail_message_id = mailMessageId
             };
 
-            var result = await _sqlContext.ExecuteAsyncProcQuery<dynamic>(RepositoryQuery.InReplyToInsertQuery(), parameters);
+            var result = await _sqlContext.ExecuteAsyncProcQuery<dynamic>(MailQuery.InReplyToInsertQuery(), parameters);
         }
 
         public async Task CreateReferenceMailAsync(string mailMessageId, string reference)
@@ -44,14 +44,14 @@ namespace Mail.Engine.Service.Infrastructure.Repositories
                 p_mail_message_id = mailMessageId
             };
 
-            var result = await _sqlContext.ExecuteAsyncProcQuery<dynamic>(RepositoryQuery.ReferenceInsertQuery(), parameters);
+            var result = await _sqlContext.ExecuteAsyncProcQuery<dynamic>(MailQuery.ReferenceInsertQuery(), parameters);
         }
         #endregion
 
         #region Outbound
         public async Task<List<MessageLogEntity>> GetMessageLogs()
         {
-            var items = await _sqlContext.SelectQuery<MessageLogEntity>(RepositoryQuery.GetMessageLogsQuery());
+            var items = await _sqlContext.SelectQuery<MessageLogEntity>(MailQuery.GetMessageLogsQuery());
 
             return [.. items];
         }
@@ -60,7 +60,7 @@ namespace Mail.Engine.Service.Infrastructure.Repositories
         {
             var parameters = new { p_mail_message_log_id = messageLogId };
 
-            var items = await _sqlContext.SelectQuery<MessageLogAttachmentEntity>(RepositoryQuery.GetMessageAttachmentsQuery(), parameters);
+            var items = await _sqlContext.SelectQuery<MessageLogAttachmentEntity>(MailQuery.GetMessageAttachmentsQuery(), parameters);
 
             return [.. items];
         }
@@ -69,7 +69,7 @@ namespace Mail.Engine.Service.Infrastructure.Repositories
         {
             var parameters = MailMessageHelper.UpdateStatusParameters(messageLog);
 
-            var result = await _sqlContext.ExecuteAsyncQuery(RepositoryQuery.UpdateStatusQuery(), parameters);
+            var result = await _sqlContext.ExecuteAsyncQuery(MailQuery.UpdateStatusQuery(), parameters);
 
             return result;
         }

@@ -6,12 +6,15 @@ using Mail.Engine.Service.Application.Configuration;
 using Mail.Engine.Service.Application.Handlers;
 using Mail.Engine.Service.Core.Repositories;
 using Mail.Engine.Service.Core.Services;
-using Mail.Engine.Service.Core.Services.InboundMail;
-using Mail.Engine.Service.Core.Services.OutboundMail;
+using Mail.Engine.Service.Core.Services.Mail;
+using Mail.Engine.Service.Core.Services.Mail.InboundMail;
+using Mail.Engine.Service.Core.Services.Mail.OutboundMail;
+using Mail.Engine.Service.Core.Services.Wati;
 using Mail.Engine.Service.Infrastructure.Repositories;
 using Mail.Engine.Service.Infrastructure.Services;
 using Mail.Engine.Service.Infrastructure.Services.InboundMail;
 using Mail.Engine.Service.Infrastructure.Services.OutboundMail;
+using Mail.Engine.Service.Infrastructure.Services.Wati;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.OpenApi.Models;
@@ -64,6 +67,7 @@ namespace Mail.Engine.Service.Api
 
             // Common Interfaces
             services.AddScoped<IMailRepository, MailRepository>();
+            services.AddScoped<IWatiRepository, WatiRepository>();
 
             // Component Interfaces
             services.AddScoped<ISqlSelector>(provider =>
@@ -94,9 +98,10 @@ namespace Mail.Engine.Service.Api
             services.AddScoped<IEmailBuilder, EmailBuilder>();
             services.AddScoped<ISmtpClientFactory, SmtpClientFactory>();
 
-            if (_env.IsProduction()) services.AddSingleton<IConfigurationService, ConfigurationService>();
+            // Wati Service
+            services.AddScoped<IWatiService, WatiService>();
 
-            if (_env.IsDevelopment()) services.AddSingleton<IConfigurationService, ConfigurationService>();
+            services.AddSingleton<IConfigurationService, ConfigurationService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

@@ -27,8 +27,12 @@ namespace Mail.Engine.Service.Api.Services
                     var inboundResult = await mediator.Send(new GetInboundQuery(), stoppingToken);
                     var outboundResult = await mediator.Send(new GetOutboundQuery(), stoppingToken);
 
+                    // Call Wati query
+                    var watiResult = await mediator.Send(new GetWatiQuery(), stoppingToken);
+
                     _logger.LogInformation($"Inbound Mails Processed: {JsonSerializer.Serialize(inboundResult)}");
                     _logger.LogInformation($"Outbound Mails Processed: {JsonSerializer.Serialize(outboundResult)}");
+                    _logger.LogInformation($"Wati Mails Processed: {JsonSerializer.Serialize(watiResult)}");
                 }
                 catch (Exception ex)
                 {
