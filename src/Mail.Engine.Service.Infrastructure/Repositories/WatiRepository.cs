@@ -15,5 +15,12 @@ namespace Mail.Engine.Service.Infrastructure.Repositories
 
             return _sqlContext.SelectFirstOrDefaultQuery<WatiConfigEntity>(query)!;
         }
+
+        public async Task<List<MessageLogEntity>> GetMessageLogs()
+        {
+            var items = await _sqlContext.SelectQuery<MessageLogEntity>(WatiQuery.GetMessageLogsQuery());
+
+            return [.. items];
+        }
     }
 }

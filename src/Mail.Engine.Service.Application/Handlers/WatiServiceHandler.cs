@@ -10,13 +10,11 @@ using MediatR;
 namespace Mail.Engine.Service.Application.Handlers
 {
     public class WatiServiceHandler(
-        IMailRepository mailRepository,
-        IWatiRepository watiRepository,
+        IWatiRepository repository,
         IWatiService watiService
     ) : IRequestHandler<GetWatiQuery, List<WatiApiResponse>>
     {
-        private readonly IMailRepository _mailRepository = mailRepository;
-        private readonly IWatiRepository _watiRepository = watiRepository;
+        private readonly IWatiRepository _repository = repository;
         private readonly IWatiService _watiService = watiService;
 
         public async Task<List<WatiApiResponse>> Handle(GetWatiQuery request, CancellationToken cancellationToken)
@@ -24,11 +22,11 @@ namespace Mail.Engine.Service.Application.Handlers
             var result = new WatiApiResult();
             var response = new List<WatiApiResponse>();
 
-            var watiConfig = await _watiRepository.GetWatiConfig();
+            var watiConfig = await _repository.GetWatiConfig();
 
             if (watiConfig != null)
             {
-                var messageList = _mailRepository.GetMessageLogs().Result.Where(x => x.MessageLogTypeName == EnumMessageTypeLog.WATI).ToList();
+                var messageList = _repository.GetMessageLogs().Result.Where(x => x.MessageLogTypeName == EnumMessageTypeLog.WATI).ToList();
 
                 if (messageList != null && messageList.Count > 0)
                 {

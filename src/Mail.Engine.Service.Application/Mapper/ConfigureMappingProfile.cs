@@ -11,15 +11,10 @@ namespace Mail.Engine.Service.Application.Mapper
         public ConfigureMappingProfile()
         {
             CreateMap<MailResult, MailResponse>().ReverseMap();
-
             CreateMap<ModelResult, ModelResponse>().ReverseMap();
             CreateMap<ContactResult, ContactResponse>().ReverseMap();
-
             CreateMap<ParameterResult, ParameterResponse>().ReverseMap();
-            CreateMap<List<ParameterResult>, List<ParameterResponse>>().ReverseMap();
-
             CreateMap<WatiApiResult, WatiApiResponse>().ReverseMap();
-            CreateMap<List<WatiApiResult>, List<WatiApiResponse>>().ReverseMap();
         }
     }
 }
