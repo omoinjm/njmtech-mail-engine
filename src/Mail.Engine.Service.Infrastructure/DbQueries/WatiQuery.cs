@@ -76,5 +76,26 @@ namespace Mail.Engine.Service.Infrastructure.DbQueries
             return query;
         }
         #endregion
+
+        #region Insert Queries
+        public static string InsertJsonData()
+        {
+            var query = @" 
+
+                INSERT INTO mail.message_log_wati_response (
+                    message_log_id,
+                    response_json
+                )
+                VALUES (
+                    @p_message_log_id,
+                    @p_response_json
+                )
+
+			";
+
+            return query;
+        }
+        #endregion
+
     }
 }
