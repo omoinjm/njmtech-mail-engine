@@ -328,3 +328,5 @@ README.md
 !.git/packed-refs
 !.git/refs/heads/**
 
+# Azure Function
+local.settings.json
