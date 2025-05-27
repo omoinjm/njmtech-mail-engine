@@ -1,0 +1,45 @@
+# See https://aka.ms/customizecontainer to learn how to customize your debug container and how Visual Studio uses this Dockerfile to build your images for faster debugging.
+
+# To enable ssh & remote debugging on app service change the base image to the one below
+# FROM mcr.microsoft.com/azure-functions/dotnet-isolated:4-dotnet-isolated8.0-appservice
+FROM mcr.microsoft.com/azure-functions/dotnet-isolated:4-dotnet-isolated8.0 AS base
+
+# Install prerequisites
+RUN apt-get update && \
+    apt-get install -y wget apt-transport-https software-properties-common && \
+    wget -q https://packages.microsoft.com/config/ubuntu/22.04/packages-microsoft-prod.deb && \
+    dpkg -i packages-microsoft-prod.deb && \
+    rm packages-microsoft-prod.deb && \
+    apt-get update
+
+# Continue with the build process
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+ARG BUILD_CONFIGURATION=Release
+WORKDIR /src
+COPY ["./src/Mail.Engine.Service.Function/Mail.Engine.Service.Function.csproj", "./"]
+COPY ["./src/Mail.Engine.Service.Application/Mail.Engine.Service.Application.csproj", "./"]
+COPY ["./src/Mail.Engine.Service.Core/Mail.Engine.Service.Core.csproj", "./"]
+COPY ["./src/Mail.Engine.Service.Infrastructure/Mail.Engine.Service.Infrastructure.csproj", "./"]1
+
+RUN dotnet restore "./Mail.Engine.Service.Function.csproj"
+COPY . .
+WORKDIR /src
+RUN dotnet build -c $BUILD_CONFIGURATION \
+-o /app/build \
+"./src/Mail.Engine.Service.Function/Mail.Engine.Service.Function.csproj"
+
+# Publish Stage
+FROM build AS publish
+ARG BUILD_CONFIGURATION=Release
+RUN dotnet publish -c $BUILD_CONFIGURATION \
+    -r linux-x64 --self-contained \
+    -o /app/publish \
+    /p:UseAppHost=false \
+    "./src/Mail.Engine.Service.Function/Mail.Engine.Service.Function.csproj"
+
+FROM base AS final
+WORKDIR /home/site/wwwroot
+COPY --from=publish /app/publish .
+
+ENV AzureWebJobsScriptRoot=/home/site/wwwroot \
+    AzureFunctionsJobHost__Logging__Console__IsEnabled=true

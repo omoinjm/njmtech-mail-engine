@@ -21,7 +21,7 @@ namespace Mail.Engine.Service.Application.Handlers
         {
             var result = new MailResult();
 
-            var mailboxes = await _repository.GetMailboxes();
+            var mailboxes = await _repository.GetMailboxes() ?? throw new InvalidOperationException("No mailboxes found.");
 
             foreach (var mailbox in mailboxes)
             {

@@ -25,6 +25,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mail.Engine.Service.Core.Un
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mail.Engine.Service.Infrastructure.UnitTests", "tests\UnitTests\Mail.Engine.Service.Infrastructure.UnitTests\Mail.Engine.Service.Infrastructure.UnitTests.csproj", "{D4C1A83A-AE82-473B-A35F-7A0ED0DF1217}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mail.Engine.Service.Function", "src\Mail.Engine.Service.Function\Mail.Engine.Service.Function.csproj", "{E2491DBE-ED7A-4231-89E4-A54E4447658B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -66,6 +68,10 @@ Global
 		{D4C1A83A-AE82-473B-A35F-7A0ED0DF1217}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D4C1A83A-AE82-473B-A35F-7A0ED0DF1217}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D4C1A83A-AE82-473B-A35F-7A0ED0DF1217}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E2491DBE-ED7A-4231-89E4-A54E4447658B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E2491DBE-ED7A-4231-89E4-A54E4447658B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E2491DBE-ED7A-4231-89E4-A54E4447658B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E2491DBE-ED7A-4231-89E4-A54E4447658B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{A026753D-10BF-4B7B-9214-DCE74FB63867} = {85853002-C919-4B97-BF4C-3A5AF243752A}
@@ -77,5 +83,6 @@ Global
 		{D8E10AC5-1829-4465-8ABD-36FC32F5874C} = {5C957617-E789-49C9-B24D-640F0000180A}
 		{EA962F69-D4F6-4C03-A05A-E6971F0F4289} = {5C957617-E789-49C9-B24D-640F0000180A}
 		{D4C1A83A-AE82-473B-A35F-7A0ED0DF1217} = {5C957617-E789-49C9-B24D-640F0000180A}
+		{E2491DBE-ED7A-4231-89E4-A54E4447658B} = {85853002-C919-4B97-BF4C-3A5AF243752A}
 	EndGlobalSection
 EndGlobal
