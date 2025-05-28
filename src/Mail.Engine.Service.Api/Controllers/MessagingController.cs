@@ -1,4 +1,6 @@
 using System.Net;
+using Mail.Engine.Service.Application.Commands;
+using Mail.Engine.Service.Application.Dto;
 using Mail.Engine.Service.Application.Queries;
 using Mail.Engine.Service.Application.Response;
 using Mail.Engine.Service.Application.Response.Wati;
@@ -38,6 +40,16 @@ namespace Mail.Engine.Service.Api.Controllers
         public async Task<IActionResult> WatiService()
         {
             var result = await _mediator.Send(new GetWatiQuery());
+
+            return Ok(result);
+        }
+
+        [HttpPost]
+        [Route("CreateOutboundMail")]
+        [ProducesResponseType(typeof(CreateResponse), (int)HttpStatusCode.OK)]
+        public async Task<IActionResult> CreateOutboundMail([FromBody] MessageLogDto request)
+        {
+            var result = await _mediator.Send(new CreateCommand<MessageLogDto, CreateResponse>(request));
 
             return Ok(result);
         }
