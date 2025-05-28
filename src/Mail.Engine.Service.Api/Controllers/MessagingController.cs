@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Mail.Engine.Service.Api.Controllers
 {
-    public class Messaging(IMediator mediator) : ApiController
+    public class MessagingController(IMediator mediator) : ApiController
     {
         private readonly IMediator _mediator = mediator;
 

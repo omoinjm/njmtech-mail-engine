@@ -9,5 +9,7 @@ namespace Mail.Engine.Service.Core.Services
 
         Task<List<T>> SelectQuery<T>(string query, object? parameters = null) where T : new();
         Task<T?> SelectFirstOrDefaultQuery<T>(string query, object? parameters = null) where T : new();
+
+        Task<T?> ExecuteStoredProcedureAsync<T>(string query, object? parameters);
     }
 }

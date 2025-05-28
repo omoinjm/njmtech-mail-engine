@@ -51,7 +51,7 @@ namespace Mail.Engine.Service.Api
             services.AddSingleton<ILoggerFactory, LoggerFactory>();
             services.AddSingleton(typeof(ILogger<>), typeof(Logger<>));
 
-            // JM: Register the global exception handler
+            // NM: Register the global exception handler
             services.AddSingleton<IExceptionHandler, GlobalExceptionHandler>();
 
             services.AddAutoMapper(typeof(Startup));
@@ -59,7 +59,7 @@ namespace Mail.Engine.Service.Api
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(ProcessInboundMailHandler).Assembly));
 
             // Register Background Service
-            services.AddHostedService<RecurringTaskService>();
+            // services.AddHostedService<RecurringTaskService>();
 
             services.AddMemoryCache();
 

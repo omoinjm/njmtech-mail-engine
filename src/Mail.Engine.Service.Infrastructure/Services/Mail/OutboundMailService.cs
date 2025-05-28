@@ -57,5 +57,12 @@ namespace Mail.Engine.Service.Infrastructure.Services
 
             await _repository.UpdateStatusAsync(messageLog);
         }
+
+        public async Task ExcludeMessageswhileProcessing(MessageLogEntity messageLog)
+        {
+            messageLog.MessageLogStatusCode = EnumMessageStatusLog.Created;
+
+            await _repository.UpdateStatusAsync(messageLog);
+        }
     }
 }

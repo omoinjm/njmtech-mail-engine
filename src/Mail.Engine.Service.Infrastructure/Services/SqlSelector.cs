@@ -58,5 +58,30 @@ namespace Mail.Engine.Service.Infrastructure.Services
 
             return db.Query<T>(query, parameters, commandType: CommandType.StoredProcedure);
         }
+
+        // For stored procedures
+        public async Task<T?> ExecuteStoredProcedureAsync<T>(string query, object? parameters)
+        {
+            using var db = new NpgsqlConnection(_connectionString);
+
+            try
+            {
+                await db.OpenAsync();
+                var result = await db.QueryFirstOrDefaultAsync<T>(
+                    query,
+                    parameters,
+                    commandType: CommandType.StoredProcedure
+                );
+                return result;
+            }
+            finally
+            {
+                // Ensure that the connection is closed after the operation.
+                if (db.State == ConnectionState.Open)
+                {
+                    await db.CloseAsync();
+                }
+            }
+        }
     }
 }

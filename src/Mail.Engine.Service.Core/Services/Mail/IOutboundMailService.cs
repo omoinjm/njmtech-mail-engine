@@ -9,5 +9,7 @@ namespace Mail.Engine.Service.Core.Services.Mail
         Task<MailResult> SendEmailAsync(MailMessage message, MessageLogEntity messageLog);
 
         Task UpdateMessageStatusAsync(MessageLogEntity messageLog, bool sent);
+
+        Task ExcludeMessageswhileProcessing(MessageLogEntity messageLog);
     }
 }

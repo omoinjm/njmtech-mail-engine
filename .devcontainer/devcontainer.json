@@ -61,7 +61,7 @@
    ],
    "mounts": [
       // .NET mounts
-      "source=${localEnv:USERPROFILE}/.ssh,target=/root/.ssh,type=bind,consistency=cached",
+      "source=${localEnv:HOME}/.ssh,target=/home/vscode/.ssh,type=bind,consistency=cached",
       "source=messaging.engine.api-bashhistory,target=/commandhistory,type=volume"
    ],
    // Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.

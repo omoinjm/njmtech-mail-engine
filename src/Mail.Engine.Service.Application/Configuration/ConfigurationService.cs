@@ -19,6 +19,12 @@ namespace Mail.Engine.Service.Application.Configuration
 
         private string GetValue(string configName) => _configuration.GetValue<string>($"Values:{configName}") ?? Environment.GetEnvironmentVariable(configName)!;
 
-        private string GetConnectionString(string configName) => _configuration.GetValue<string>($"ConnectionStrings:{configName}") ?? Environment.GetEnvironmentVariable(configName)!;
+        private string? GetConnectionString(string configName)
+        {
+            return _configuration.GetValue<string>($"ConnectionStrings:{configName}")
+                ?? Environment.GetEnvironmentVariable(configName)
+                ?? Environment.GetEnvironmentVariable($"ConnectionStrings:{configName}");
+        }
+
     }
 }

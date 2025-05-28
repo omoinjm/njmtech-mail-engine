@@ -40,6 +40,8 @@ namespace Mail.Engine.Service.Application.Handlers
 
                 foreach (var messageLog in emailList)
                 {
+                    await _mailService.ExcludeMessageswhileProcessing(messageLog);
+
                     emailCount++;
 
                     using var message = _emailBuilder.BuildEmailMessage(messageLog, _config.EmailTesting());
