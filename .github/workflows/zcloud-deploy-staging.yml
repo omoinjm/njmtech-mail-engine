@@ -22,8 +22,28 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Build Docker image
-        # run: docker build --rm -t njmtech/njmtech-messageing-engine:latest .
-        run: docker build --no-cache --rm -f Dockerfile.Azure -t wallety/wallety-messaging-engine:latest .
+        env:
+          PGSQL_CONNECTION_STRING: ${{ secrets.DEV_PGSQL_CONNECTION_STRING }}
+          FUNCTIONS_WORKER_RUNTIME: dotnet-isolated
+          WEBSITE_TIME_ZONE: 'South Africa Standard Time'
+          FUNCTIONS_EXTENSION_VERSION: '~4'
+          AzureWebJobsStorage: ${{ secrets.DEV_AZURE_WEBJOBS_STORAGE }}
+          APPINSIGHTS_INSTRUMENTATIONKEY: ${{ secrets.DEV_APPINSIGHTS_INSTRUMENTATIONKEY }}
+          APPLICATIONINSIGHTS_CONNECTION_STRING: ${{ secrets.DEV_APPLICATIONINSIGHTS_CONNECTION_STRING }}
+        run: |
+          docker build \
+            --no-cache \
+            --rm \
+            -f Dockerfile.Azure \
+            -t wallety/wallety-messaging-engine:latest \
+            --build-arg PGSQL_CONNECTION_STRING="$PGSQL_CONNECTION_STRING" \
+            --build-arg FUNCTIONS_WORKER_RUNTIME="$FUNCTIONS_WORKER_RUNTIME" \
+            --build-arg WEBSITE_TIME_ZONE="$WEBSITE_TIME_ZONE" \
+            --build-arg FUNCTIONS_EXTENSION_VERSION="$FUNCTIONS_EXTENSION_VERSION" \
+            --build-arg AzureWebJobsStorage="$AzureWebJobsStorage" \
+            --build-arg APPINSIGHTS_INSTRUMENTATIONKEY="$APPINSIGHTS_INSTRUMENTATIONKEY" \
+            --build-arg APPLICATIONINSIGHTS_CONNECTION_STRING="$APPLICATIONINSIGHTS_CONNECTION_STRING" \
+            .
 
   deploy:
     needs: build-and-test
