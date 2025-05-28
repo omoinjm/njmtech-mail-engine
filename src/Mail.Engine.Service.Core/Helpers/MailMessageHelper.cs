@@ -46,7 +46,7 @@ namespace Mail.Engine.Service.Core.Helpers
             };
         }
 
-        public static object InsertWatiResponseParameters(Guid messageLogId, string responseJson)
+        public static object InsertWatiResponseParameters(Guid? messageLogId, string responseJson)
         {
             return new
             {

@@ -47,7 +47,10 @@ namespace Mail.Engine.Service.Infrastructure.Services.Wati
 
             await _mailRepository.UpdateStatusAsync(messageLog!);
 
-            await _watiRepository.InsertJsonData(messageLog!.MessageLogId, JsonConvert.SerializeObject(result));
+            if (messageLog!.MessageLogId.HasValue)
+            {
+                await _watiRepository.InsertJsonData(messageLog.MessageLogId.Value, JsonConvert.SerializeObject(result));
+            }
         }
 
         private async Task InitializeHttpClient()

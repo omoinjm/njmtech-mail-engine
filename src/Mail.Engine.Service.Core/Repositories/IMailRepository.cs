@@ -15,7 +15,7 @@ namespace Mail.Engine.Service.Core.Repositories
 
         Task<bool> UpdateStatusAsync(MessageLogEntity messageLog);
 
-        // JM: This will replace the way I created Outbound Mails
+        // NM: This will replace the way I created Outbound Mails
         Task<CreateRecordResult> CreateMessageLogRecord(MessageLogEntity entity);
     }
 }

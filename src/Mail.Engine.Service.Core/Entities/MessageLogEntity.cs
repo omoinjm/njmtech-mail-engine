@@ -2,7 +2,7 @@ namespace Mail.Engine.Service.Core.Entities
 {
     public class MessageLogEntity
     {
-        public Guid MessageLogId { get; set; }
+        public Guid? MessageLogId { get; set; }
         public Guid MessageLogHeaderId { get; set; }
         public System.String? FromField { get; set; }
         public System.String? FromName { get; set; }

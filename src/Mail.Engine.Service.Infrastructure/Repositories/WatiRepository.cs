@@ -26,7 +26,7 @@ namespace Mail.Engine.Service.Infrastructure.Repositories
         }
 
 
-        public async Task<bool> InsertJsonData(Guid messageLogId, string responseJson)
+        public async Task<bool> InsertJsonData(Guid? messageLogId, string responseJson)
         {
             var parameters = MailMessageHelper.InsertWatiResponseParameters(messageLogId, responseJson);
 

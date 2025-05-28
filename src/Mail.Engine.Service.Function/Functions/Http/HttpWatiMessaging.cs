@@ -1,12 +1,24 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Mail.Engine.Service.Application.Queries;
+using MediatR;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Azure.Functions.Worker;
+using Microsoft.Extensions.Logging;
 
-namespace Mail.Engine.Service.Function.Functions.Http
+namespace Mail.Engine.Service.Function.Functions.Http;
+
+public class HttpWatiMessaging(ILogger<HttpWatiMessaging> logger, IMediator mediator)
 {
-    public class HttpWatiMessaging
-    {
+    private readonly ILogger<HttpWatiMessaging> _logger = logger;
+    private readonly IMediator _mediator = mediator;
 
+    [Function("HttpWatiMessaging")]
+    public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Anonymous, nameof(HttpMethods.Get))] HttpRequest req)
+    {
+        _logger.LogInformation("Processing v1 request.");
+
+        var result = await _mediator.Send(new GetWatiQuery());
+
+        return new OkObjectResult(result);
     }
 }
