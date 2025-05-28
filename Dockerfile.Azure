@@ -47,6 +47,7 @@ ENV ConnectionStrings:PGSQL_CONNECTION_STRING=$PGSQL_CONNECTION_STRING \
     APPLICATIONINSIGHTS_CONNECTION_STRING=$APPLICATIONINSIGHTS_CONNECTION_STRING
 
 ENV AzureWebJobsScriptRoot=/home/site/wwwroot \
-    AzureFunctionsJobHost__Logging__Console__IsEnabled=true
+    AzureFunctionsJobHost__Logging__Console__IsEnabled=true \
+    Logging__LogLevel__Default=Debug
 
 
