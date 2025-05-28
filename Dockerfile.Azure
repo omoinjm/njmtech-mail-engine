@@ -22,7 +22,7 @@ RUN dotnet build -c $BUILD_CONFIGURATION -o /app/build "./src/Mail.Engine.Servic
 # Publish Stage
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish -c $BUILD_CONFIGURATION -r linux-x64 --self-contained -o /app/publish /p:UseAppHost=false "./src/Mail.Engine.Service.Function/Mail.Engine.Service.Function.csproj"
+RUN dotnet publish -c $BUILD_CONFIGURATION -r linux-x64 --self-contained -o /app/publish /p:UseAppHost=true "./src/Mail.Engine.Service.Function/Mail.Engine.Service.Function.csproj"
 
 FROM base AS final
 WORKDIR /home/site/wwwroot
