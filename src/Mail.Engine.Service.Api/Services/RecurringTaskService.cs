@@ -2,9 +2,6 @@ using System.Text.Json;
 using Mail.Engine.Service.Application.Queries;
 using MediatR;
 
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-
 namespace Mail.Engine.Service.Api.Services
 {
     public class RecurringTaskService(ILogger<RecurringTaskService> logger, IServiceScopeFactory serviceScopeFactory) : BackgroundService
@@ -39,7 +36,7 @@ namespace Mail.Engine.Service.Api.Services
                     _logger.LogError(ex, "Error executing recurring tasks.");
                 }
 
-                await Task.Delay(10000, stoppingToken); // Run every second
+                await Task.Delay(5000, stoppingToken); // Run every second
             }
         }
     }
