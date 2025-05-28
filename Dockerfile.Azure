@@ -12,7 +12,7 @@ WORKDIR /src
 COPY ["./src/Mail.Engine.Service.Function/Mail.Engine.Service.Function.csproj", "./"]
 COPY ["./src/Mail.Engine.Service.Application/Mail.Engine.Service.Application.csproj", "./"]
 COPY ["./src/Mail.Engine.Service.Core/Mail.Engine.Service.Core.csproj", "./"]
-COPY ["./src/Mail.Engine.Service.Infrastructure/Mail.Engine.Service.Infrastructure.csproj", "./"]1
+COPY ["./src/Mail.Engine.Service.Infrastructure/Mail.Engine.Service.Infrastructure.csproj", "./"]
 
 RUN dotnet restore "./Mail.Engine.Service.Function.csproj"
 COPY . .
@@ -22,7 +22,7 @@ RUN dotnet build -c $BUILD_CONFIGURATION -o /app/build "./src/Mail.Engine.Servic
 # Publish Stage
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish -c $BUILD_CONFIGURATION -r linux-x64 --self-contained -o /app/publish /p:UseAppHost=false "./src/Mail.Engine.Service.Function/Mail.Engine.Service.Function.csproj"
+RUN dotnet publish -c $BUILD_CONFIGURATION -r linux-x64 --self-contained -o /app/publish /p:UseAppHost=true "./src/Mail.Engine.Service.Function/Mail.Engine.Service.Function.csproj"
 
 FROM base AS final
 WORKDIR /home/site/wwwroot

@@ -22,7 +22,8 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Build Docker image
-        run: docker build --rm -t njmtech/njmtech-messageing-engine:latest .
+        # run: docker build --rm -t njmtech/njmtech-messageing-engine:latest .
+        run: docker build --no-cache --rm -f Dockerfile.Azure -t wallety/wallety-messaging-engine:latest .
 
   deploy:
     needs: build-and-test
