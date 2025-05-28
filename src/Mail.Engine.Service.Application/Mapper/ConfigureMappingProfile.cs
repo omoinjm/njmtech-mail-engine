@@ -10,6 +10,11 @@ namespace Mail.Engine.Service.Application.Mapper
     {
         public ConfigureMappingProfile()
         {
+            // Common
+            // CreateMap<UpdateResponse, UpdateRecordResult>().ReverseMap();
+            CreateMap<CreateResponse, CreateRecordResult>().ReverseMap();
+            // CreateMap<DeleteResponse, DeleteRecordResult>().ReverseMap();
+
             CreateMap<MailResult, MailResponse>().ReverseMap();
             CreateMap<ModelResult, ModelResponse>().ReverseMap();
             CreateMap<ContactResult, ContactResponse>().ReverseMap();

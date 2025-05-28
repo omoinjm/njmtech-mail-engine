@@ -55,7 +55,10 @@ namespace Mail.Engine.Service.Infrastructure.Services
                         result.TotalMessagesProcessed++;
 
                         if (!isProcessed)
+                        {
                             result.TotalMessagesFailed++;
+                            result.ErrorMessages.Add(message.TextBody.ToString());
+                        }
                     }
                     catch (Exception ex)
                     {

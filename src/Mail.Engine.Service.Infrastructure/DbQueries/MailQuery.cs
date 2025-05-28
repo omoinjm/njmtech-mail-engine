@@ -191,10 +191,27 @@ namespace Mail.Engine.Service.Infrastructure.DbQueries
         {
             var query = @"
                CALL mail.message_insert(
-                    @p_new_mail_message_id, @p_mailbox_id, @p_subject, @p_text_plain, @p_text_html, @p_format_text_html,
-                    @p_date_sent, @p_cc_field, @p_bcc_field, @p_sent_to, @p_sent_from,
-                    @p_sent_from_display_name, @p_sent_from_raw, @p_imap_message_id,
-                    @p_mime_version, @p_return_path, @p_logged_in_user
+                    @p_is_error,
+                    @p_return_record_id,
+                    @p_result_message,
+                    @p_object_name,
+                    
+                    @p_mailbox_id,
+                    @p_subject,
+                    @p_text_plain,
+                    @p_text_html,
+                    @p_format_text_html,
+                    @p_date_sent,
+                    @p_cc_field,
+                    @p_bcc_field,
+                    @p_sent_to,
+                    @p_sent_from,
+                    @p_sent_from_display_name,
+                    @p_sent_from_raw,
+                    @p_imap_message_id,
+                    @p_mime_version,
+                    @p_return_path,
+                    @p_logged_in_user
                 );
             ";
             return query;

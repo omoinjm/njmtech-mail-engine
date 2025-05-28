@@ -59,7 +59,7 @@ namespace Mail.Engine.Service.Api
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(ProcessInboundMailHandler).Assembly));
 
             // Register Background Service
-            services.AddHostedService<RecurringTaskService>();
+            // services.AddHostedService<RecurringTaskService>();
 
             services.AddMemoryCache();
 

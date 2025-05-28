@@ -21,8 +21,16 @@ namespace Mail.Engine.Service.Infrastructure.Services.InboundMail
             MailboxEntity mailbox)
         {
             var message = await sourceFolder.GetMessageAsync(messageSummary.UniqueId);
-            bool success = await SaveMailToDatabaseAsync(message, mailbox);
 
+            if (message.Subject.Contains("Delivery Status Notification (Failure)"))
+            {
+                await sourceFolder.AddFlagsAsync(messageSummary.UniqueId, MessageFlags.Deleted, true);
+                await sourceFolder.MoveToAsync(messageSummary.UniqueId, destinationFolder);
+
+                return false;
+            }
+
+            bool success = await SaveMailToDatabaseAsync(message, mailbox);
             if (success)
             {
                 await sourceFolder.AddFlagsAsync(messageSummary.UniqueId, MessageFlags.Seen, true);
@@ -36,9 +44,9 @@ namespace Mail.Engine.Service.Infrastructure.Services.InboundMail
         {
             var mailMessage = _messageBuilder.BuildMailMessage(message);
 
-            var mailMessageId = await _mailRepository.CreateMailMessageAsync(mailMessage, mailbox);
+            var result = await _mailRepository.CreateMailMessageAsync(mailMessage, mailbox);
 
-            if (mailMessageId == Guid.Empty)
+            if (!result.IsSuccess)
                 return false;
 
             // await _attachmentProcessor.ProcessAttachmentsAsync(message, mailMessageId, mailbox);

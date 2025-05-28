@@ -34,5 +34,6 @@ namespace Mail.Engine.Service.Core.Entities
         public System.String? TenantId { get; set; }
         public System.String? SecretId { get; set; }
         public System.Boolean IsOutlook { get; set; }
+        public int? PrimaryKey { get; set; }
     }
 }

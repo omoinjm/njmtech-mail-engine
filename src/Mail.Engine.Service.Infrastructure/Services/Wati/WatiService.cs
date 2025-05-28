@@ -35,21 +35,19 @@ namespace Mail.Engine.Service.Infrastructure.Services.Wati
 
         public async Task UpdateMessageStatusAsync(MessageLogEntity messageLog, WatiApiResult result)
         {
+            messageLog.StatusMessage = "Failed to send";
+            messageLog.MessageLogStatusCode = EnumMessageStatusLog.Failed;
+
             if (result != null && messageLog != null)
             {
                 messageLog.StatusMessage = "Successful";
                 messageLog.DateSent = DateTime.Now;
                 messageLog.MessageLogStatusCode = EnumMessageStatusLog.Sent;
             }
-            else
-            {
-                messageLog.StatusMessage = "Failed to send";
-                messageLog.MessageLogStatusCode = EnumMessageStatusLog.Failed;
-            }
 
-            await _mailRepository.UpdateStatusAsync(messageLog);
+            await _mailRepository.UpdateStatusAsync(messageLog!);
 
-            await _watiRepository.InsertJsonData(messageLog.MessageLogId, JsonConvert.SerializeObject(result));
+            await _watiRepository.InsertJsonData(messageLog!.MessageLogId, JsonConvert.SerializeObject(result));
         }
 
         private async Task InitializeHttpClient()

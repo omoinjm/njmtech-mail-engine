@@ -1,6 +1,7 @@
 using Mail.Engine.Service.Core.Entities;
 using Mail.Engine.Service.Core.Helpers;
 using Mail.Engine.Service.Core.Repositories;
+using Mail.Engine.Service.Core.Results;
 using Mail.Engine.Service.Core.Services;
 using Mail.Engine.Service.Infrastructure.DbQueries;
 
@@ -18,11 +19,15 @@ namespace Mail.Engine.Service.Infrastructure.Repositories
             return [.. items];
         }
 
-        public async Task<Guid> CreateMailMessageAsync(MessageEntity message, MailboxEntity mailbox)
+        public async Task<CreateRecordResult> CreateMailMessageAsync(MessageEntity message, MailboxEntity mailbox)
         {
             var parameters = MailMessageHelper.CreateMailMessageParameters(message, mailbox);
 
-            return await _sqlContext.ExecuteScalarAsyncQuery<Guid>(MailQuery.MailboxInsertQuery(), parameters);
+            var result = await _sqlContext.ExecuteScalarAsyncQuery<dynamic>(MailQuery.MailboxInsertQuery(), parameters);
+
+            if (result?.p_is_error == true) return CreateRecordResult.Error(result?.p_result_message);
+
+            return CreateRecordResult.Successs(result!.p_return_record_id, result!.p_result_message);
         }
 
         public async Task CreateInReplyToAsync(string mailMessageId, string inReplyTo)
@@ -72,6 +77,20 @@ namespace Mail.Engine.Service.Infrastructure.Repositories
             var result = await _sqlContext.ExecuteAsyncQuery(MailQuery.UpdateStatusQuery(), parameters);
 
             return result;
+        }
+
+        public async Task<CreateRecordResult> CreateMessageLogRecord(MessageLogEntity entity)
+        {
+            var parameters = MailMessageHelper.CreateMailMessageLogParameters(entity);
+
+            var result = await _sqlContext.ExecuteStoredProcedureAsync<dynamic>(
+                "mail.message_log_insert",
+                parameters
+            );
+
+            if (result?.p_is_error == true) return CreateRecordResult.Error(result?.p_result_message);
+
+            return CreateRecordResult.Successs(result!.p_return_record_id, result!.p_result_message);
         }
         #endregion
     }
