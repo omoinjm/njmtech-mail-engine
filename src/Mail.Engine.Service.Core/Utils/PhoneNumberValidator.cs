@@ -2,27 +2,32 @@ using System.Text.RegularExpressions;
 
 namespace Mail.Engine.Service.Core.Utils
 {
-    public class PhoneNumberValidator
+    public static class PhoneNumberValidator
     {
+        private static readonly Regex SaRegex = new(@"^(?:\+?27|0)(6\d|7\d)\d{7}$", RegexOptions.Compiled);
+        private static readonly Regex UkRegex = new(@"^(?:\+?44|0)7\d{9}$", RegexOptions.Compiled);
+        private static readonly Regex ZwRegex = new(@"^(?:\+?263|0)7\d{8}$", RegexOptions.Compiled);
+
         public static bool IsValidSouthAfricanCellNumber(string phoneNumber)
-        {
-            // Validates South African mobile numbers like: 0721234567 or +27721234567
-            string pattern = @"^(?:\+27|0)(6\d|7[0-9])\d{7}$";
-            return Regex.IsMatch(phoneNumber, pattern);
-        }
+            => SaRegex.IsMatch(phoneNumber.Trim());
 
         public static bool IsValidUkMobileNumber(string phoneNumber)
-        {
-            // Matches UK mobile numbers like: 07123456789 or +447123456789
-            string pattern = @"^(?:\+44|0)7\d{9}$";
-            return Regex.IsMatch(phoneNumber, pattern);
-        }
+            => UkRegex.IsMatch(phoneNumber.Trim());
 
         public static bool IsValidZimbabweMobileNumber(string phoneNumber)
+            => ZwRegex.IsMatch(phoneNumber.Trim());
+
+        public static bool IsValidPhoneNumber(string phoneNumber, string alpha3CountryCode)
         {
-            // Matches Zim numbers like: 0772123456 or +263772123456
-            string pattern = @"^(?:\+263|0)7\d{8}$";
-            return Regex.IsMatch(phoneNumber, pattern);
+            phoneNumber = phoneNumber.Trim();
+
+            return alpha3CountryCode switch
+            {
+                "ZAF" => IsValidSouthAfricanCellNumber(phoneNumber),
+                "GBR" => IsValidUkMobileNumber(phoneNumber),
+                "ZWE" => IsValidZimbabweMobileNumber(phoneNumber),
+                _ => false
+            };
         }
     }
 }
