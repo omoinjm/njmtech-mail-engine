@@ -68,6 +68,7 @@ namespace Mail.Engine.Service.Api
             // Common Interfaces
             services.AddScoped<IMailRepository, MailRepository>();
             services.AddScoped<IWatiRepository, WatiRepository>();
+            services.AddScoped<ICustomerRepository, CustomerRepository>();
 
             // Component Interfaces
             services.AddScoped<ISqlSelector>(provider =>

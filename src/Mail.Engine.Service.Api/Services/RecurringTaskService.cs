@@ -27,9 +27,14 @@ namespace Mail.Engine.Service.Api.Services
                     // Call Wati query
                     var watiResult = await mediator.Send(new GetWatiQuery(), stoppingToken);
 
+                    // var customerLogoutResult = await mediator.Send(new GetCustomerLogoutQuery(), stoppingToken);
+
                     _logger.LogInformation($"Inbound Mails Processed: {JsonSerializer.Serialize(inboundResult)}");
                     _logger.LogInformation($"Outbound Mails Processed: {JsonSerializer.Serialize(outboundResult)}");
+
                     _logger.LogInformation($"Wati Mails Processed: {JsonSerializer.Serialize(watiResult)}");
+
+                    // _logger.LogInformation($"Wati Customer Autologout: {JsonSerializer.Serialize(customerLogoutResult)}");
                 }
                 catch (Exception ex)
                 {

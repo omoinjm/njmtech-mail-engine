@@ -54,6 +54,16 @@ namespace Mail.Engine.Service.Api.Controllers
             return Ok(result);
         }
 
+        [HttpGet]
+        [Route("CustomerLogout")]
+        [ProducesResponseType(typeof(object), (int)HttpStatusCode.OK)]
+        public async Task<IActionResult> CustomerLogout()
+        {
+            var result = await _mediator.Send(new GetCustomerLogoutQuery());
+
+            return Ok(result);
+        }
+
         [AllowAnonymous]
         [HttpGet]
         [Route("Ping")]
