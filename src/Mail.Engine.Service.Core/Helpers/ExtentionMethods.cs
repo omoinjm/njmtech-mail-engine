@@ -1,3 +1,4 @@
+using Mail.Engine.Service.Core.Utils;
 using MimeKit;
 
 namespace Mail.Engine.Service.Core.Helpers
@@ -28,6 +29,17 @@ namespace Mail.Engine.Service.Core.Helpers
                 mailboxes
                     .Where(m => !string.IsNullOrEmpty(m?.Address))
                     .Select(m => m.Address));
+        }
+
+        public static bool IsValidPhoneNumber(this string phoneNumber, string alpha3Code)
+        {
+            return alpha3Code switch
+            {
+                "ZAF" => PhoneNumberValidator.IsValidSouthAfricanCellNumber(phoneNumber),
+                "GBR" => PhoneNumberValidator.IsValidUkMobileNumber(phoneNumber),
+                "ZWE" => PhoneNumberValidator.IsValidZimbabweMobileNumber(phoneNumber),
+                _ => false
+            };
         }
     }
 }
