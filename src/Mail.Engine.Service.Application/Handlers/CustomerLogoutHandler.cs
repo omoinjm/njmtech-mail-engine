@@ -80,21 +80,21 @@ namespace Mail.Engine.Service.Application.Handlers
 
                             await _customerRepository.UpdateCustomerSession(session.Id);
 
+                            if (!await SendMessage(phone, () => PayloadTemplates.SendLoginTemplate(phone)))
+                            {
+                                await AddResponse(customer.CustomerId, phone, false,
+                                    "Failed to send login template message", "Login template message failed");
+                                continue;
+                            }
+
+                            await Task.Delay(TimeSpan.FromSeconds(3));
+
                             if (!await SendMessage(phone, () => PayloadTemplates.SendConfirmationMessage(
                                 "You have been logged out of your Wallety account automatically due to inactivity, please login below."))
                             )
                             {
                                 await AddResponse(customer.CustomerId, phone, false,
                                     "Failed to send confirmation message", "Confirmation message failed");
-                                continue;
-                            }
-
-                            await Task.Delay(TimeSpan.FromSeconds(3));
-
-                            if (!await SendMessage(phone, () => PayloadTemplates.SendLoginTemplate(phone)))
-                            {
-                                await AddResponse(customer.CustomerId, phone, false,
-                                    "Failed to send login template message", "Login template message failed");
                                 continue;
                             }
 
