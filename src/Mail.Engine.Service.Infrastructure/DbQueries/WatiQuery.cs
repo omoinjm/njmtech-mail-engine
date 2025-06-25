@@ -71,6 +71,7 @@ namespace Mail.Engine.Service.Infrastructure.DbQueries
 
                 WHERE t.code = '{EnumMessageTypeLog.WATI}' AND s.code = '{EnumMessageStatusLog.Pending}'
 
+                ORDER BY m.created_at DESC
             ";
 
             return query;
