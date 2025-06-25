@@ -9,8 +9,8 @@ namespace Mail.Engine.Service.Core.Templates
         {
             var payload = new
             {
-                template_name = "response_message_v16",
-                broadcast_name = "response_message_v16_broadcast",
+                template_name = "response_message_v17",
+                broadcast_name = "response_message_v17_broadcast",
                 parameters = new[]
                     {
                         new { name = "notificationmessage", value = $"{message}" }
