@@ -1,3 +1,4 @@
+using System.Linq;
 using Mail.Engine.Service.Application.Helpers;
 using Mail.Engine.Service.Application.Queries;
 using Mail.Engine.Service.Core.Entities;
@@ -16,6 +17,8 @@ namespace Mail.Engine.Service.Application.Handlers
     {
         private readonly ICustomerRepository _customerRepository = customerRepository;
         private readonly IMailRepository _mailRepository = mailRepository;
+
+        private readonly SemaphoreSlim _semaphore = new(10);
 
         public async Task<object?> Handle(GetCustomerLogoutQuery request, CancellationToken cancellationToken)
         {
@@ -47,54 +50,65 @@ namespace Mail.Engine.Service.Application.Handlers
                 return result.IsSuccess;
             }
 
-            foreach (var customer in customers)
+            var tasks = customers.Select(async customer =>
             {
-                var sessions = await _customerRepository.GetCustomerSession(customer.CustomerId);
+                await _semaphore.WaitAsync(); // Limit concurrency by waiting for the semaphore.
 
-                foreach (var session in sessions.Where(s => s.IsActive))
+                try
                 {
-                    var token = session.SessionToken;
-                    var phone = customer.PhoneNumber;
+                    var sessions = await _customerRepository.GetCustomerSession(customer.CustomerId);
 
-                    if (token == null || !phone.IsValidPhoneNumber(customer.Alpha3Code))
+                    foreach (var session in sessions.Where(s => s.IsActive))
                     {
-                        await AddResponse(customer.CustomerId, phone, false,
-                            "Skipped due to invalid token or phone number format",
-                            $"Invalid token or phone number format for country code: {customer.Alpha3Code}");
-                        continue;
-                    }
+                        var token = session.SessionToken;
+                        var phone = customer.PhoneNumber;
 
-                    var idleMinutes = (DateTime.UtcNow - session.LastActiveTime).TotalMinutes;
-                    if (JwtClaimsHelper.IsJwtTokenExpired(token) || idleMinutes > 15)
-                    {
-                        var loginKey = await _customerRepository.GetLoginKey(customer.CustomerId);
-                        if (loginKey != null)
-                            await _customerRepository.RemoveLoginKey(loginKey.Key);
-
-                        await _customerRepository.UpdateCustomerSession(session.Id);
-
-                        if (!await SendMessage(phone, () => PayloadTemplates.SendConfirmationMessage(
-                            "You have been logged out of your Wallety account automatically due to inactivity, please login below."))
-                        )
+                        if (token == null || !phone.IsValidPhoneNumber(customer.Alpha3Code))
                         {
                             await AddResponse(customer.CustomerId, phone, false,
-                                "Failed to send confirmation message", "Confirmation message failed");
+                                "Skipped due to invalid token or phone number format",
+                                $"Invalid token or phone number format for country code: {customer.Alpha3Code}");
                             continue;
                         }
 
-                        await Task.Delay(TimeSpan.FromSeconds(3));
-
-                        if (!await SendMessage(phone, () => PayloadTemplates.SendLoginTemplate(phone)))
+                        var idleMinutes = (DateTime.UtcNow - session.LastActiveTime).TotalMinutes;
+                        if (JwtClaimsHelper.IsJwtTokenExpired(token) || idleMinutes > 15)
                         {
-                            await AddResponse(customer.CustomerId, phone, false,
-                                "Failed to send login template message", "Login template message failed");
-                            continue;
-                        }
+                            var loginKey = await _customerRepository.GetLoginKey(customer.CustomerId);
+                            if (loginKey != null)
+                                await _customerRepository.RemoveLoginKey(loginKey.Key);
 
-                        await AddResponse(customer.CustomerId, phone, true, "Logout performed and confirmation sent");
+                            await _customerRepository.UpdateCustomerSession(session.Id);
+
+                            if (!await SendMessage(phone, () => PayloadTemplates.SendConfirmationMessage(
+                                "You have been logged out of your Wallety account automatically due to inactivity, please login below."))
+                            )
+                            {
+                                await AddResponse(customer.CustomerId, phone, false,
+                                    "Failed to send confirmation message", "Confirmation message failed");
+                                continue;
+                            }
+
+                            await Task.Delay(TimeSpan.FromSeconds(3));
+
+                            if (!await SendMessage(phone, () => PayloadTemplates.SendLoginTemplate(phone)))
+                            {
+                                await AddResponse(customer.CustomerId, phone, false,
+                                    "Failed to send login template message", "Login template message failed");
+                                continue;
+                            }
+
+                            await AddResponse(customer.CustomerId, phone, true, "Logout performed and confirmation sent");
+                        }
                     }
                 }
-            }
+                finally
+                {
+                    _semaphore.Release(); // Release the semaphore to allow other operations.
+                }
+            });
+
+            await Task.WhenAll(tasks);
 
             return new
             {
