@@ -89,7 +89,7 @@ namespace Mail.Engine.Service.Application.Handlers
                                 continue;
                             }
 
-                            await Task.Delay(TimeSpan.FromSeconds(3));
+                            await Task.Delay(TimeSpan.FromSeconds(50));
 
                             if (!await SendMessage(phone, () => PayloadTemplates.SendLoginTemplate(phone)))
                             {

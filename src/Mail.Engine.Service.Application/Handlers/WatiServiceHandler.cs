@@ -29,17 +29,14 @@ namespace Mail.Engine.Service.Application.Handlers
             {
                 var messages = await _repository.GetMessageLogs();
 
-                // ✅ Sort messages by oldest date first (assuming CreatedAt is the datetime field)
-                var orderedMessages = messages
-                    .Where(m => m != null)
-                    .OrderByDescending(m => m.CreatedAt) // Replace 'CreatedAt' with the actual datetime property name
-                    .ToList();
-
-                if (orderedMessages.Count > 0)
+                if (messages != null && messages.Count > 0)
                 {
-                    var tasks = orderedMessages.Select(async message =>
+                    int emailCount = 0;
+                    var tasks = messages.Select(async message =>
                     {
                         await _semaphore.WaitAsync(); // Limit concurrency by waiting for the semaphore.
+
+                        emailCount++;
 
                         try
                         {
