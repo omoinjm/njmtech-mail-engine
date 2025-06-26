@@ -1,7 +1,6 @@
 using Mail.Engine.Service.Application.Mapper;
 using Mail.Engine.Service.Application.Queries;
 using Mail.Engine.Service.Application.Response.Wati;
-using Mail.Engine.Service.Core.Enum;
 using Mail.Engine.Service.Core.Repositories;
 using Mail.Engine.Service.Core.Results.Wati;
 using Mail.Engine.Service.Core.Services.Wati;
@@ -17,32 +16,46 @@ namespace Mail.Engine.Service.Application.Handlers
         private readonly IWatiRepository _repository = repository;
         private readonly IWatiService _watiService = watiService;
 
+        private readonly SemaphoreSlim _semaphore = new(10);
+
         public async Task<List<WatiApiResponse>> Handle(GetWatiQuery request, CancellationToken cancellationToken)
         {
             var result = new WatiApiResult();
-
             var response = new List<WatiApiResponse>();
 
             var watiConfig = await _repository.GetWatiConfig();
 
             if (watiConfig != null)
             {
-                var messageList = await _repository.GetMessageLogs();
+                var messages = await _repository.GetMessageLogs();
 
-                if (messageList != null && messageList.Count > 0)
+                // ✅ Sort messages by oldest date first (assuming CreatedAt is the datetime field)
+                var orderedMessages = messages
+                    .Where(m => m != null)
+                    .OrderBy(m => m.CreatedAt) // Replace 'CreatedAt' with the actual datetime property name
+                    .ToList();
+
+                if (orderedMessages.Count > 0)
                 {
-                    int emailCount = 0;
-
-                    foreach (var message in messageList)
+                    var tasks = orderedMessages.Select(async message =>
                     {
-                        emailCount++;
+                        await _semaphore.WaitAsync(); // Limit concurrency by waiting for the semaphore.
 
-                        result = await _watiService.SendMessage(message.ToField!, message.Body!);
+                        try
+                        {
+                            result = await _watiService.SendMessage(message.ToField!, message.Body!);
 
-                        response.Add(LazyMapper.Mapper.Map<WatiApiResponse>(result));
+                            response.Add(LazyMapper.Mapper.Map<WatiApiResponse>(result));
 
-                        await _watiService.UpdateMessageStatusAsync(message, result);
-                    }
+                            await _watiService.UpdateMessageStatusAsync(message, result);
+                        }
+                        finally
+                        {
+                            _semaphore.Release(); // Release the semaphore to allow other operations.
+                        }
+                    });
+
+                    await Task.WhenAll(tasks);
                 }
             }
 
