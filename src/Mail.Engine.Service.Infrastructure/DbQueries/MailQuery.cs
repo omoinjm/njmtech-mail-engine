@@ -96,7 +96,6 @@ namespace Mail.Engine.Service.Infrastructure.DbQueries
                 LEFT JOIN mail.message_log_status s ON m.message_log_status_id = s.id
                 LEFT JOIN mail.smtp_configuration sc ON m.smtp_id = sc.id
 
-
                 WHERE t.code = '{EnumMessageTypeLog.EMAIL}' AND s.code = '{EnumMessageStatusLog.Pending}'
 
             ";
