@@ -32,7 +32,7 @@ namespace Mail.Engine.Service.Application.Handlers
                 // ✅ Sort messages by oldest date first (assuming CreatedAt is the datetime field)
                 var orderedMessages = messages
                     .Where(m => m != null)
-                    .OrderBy(m => m.CreatedAt) // Replace 'CreatedAt' with the actual datetime property name
+                    .OrderByDescending(m => m.CreatedAt) // Replace 'CreatedAt' with the actual datetime property name
                     .ToList();
 
                 if (orderedMessages.Count > 0)
