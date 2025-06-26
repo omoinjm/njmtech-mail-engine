@@ -1,7 +1,6 @@
 using Mail.Engine.Service.Application.Mapper;
 using Mail.Engine.Service.Application.Queries;
 using Mail.Engine.Service.Application.Response.Wati;
-using Mail.Engine.Service.Core.Enum;
 using Mail.Engine.Service.Core.Repositories;
 using Mail.Engine.Service.Core.Results.Wati;
 using Mail.Engine.Service.Core.Services.Wati;
@@ -27,21 +26,17 @@ namespace Mail.Engine.Service.Application.Handlers
 
             if (watiConfig != null)
             {
-                var messageList = await _repository.GetMessageLogs();
+                var messages = await _repository.GetMessageLogs();
 
-                if (messageList != null && messageList.Count > 0)
+                if (messages != null && messages.Count > 0)
                 {
-                    int emailCount = 0;
-
-                    foreach (var message in messageList)
+                    for (int i = 0; i < messages.Count; i++)
                     {
-                        emailCount++;
-
-                        result = await _watiService.SendMessage(message.ToField!, message.Body!);
+                        result = await _watiService.SendMessage(messages[i].ToField!, messages[i].Body!);
 
                         response.Add(LazyMapper.Mapper.Map<WatiApiResponse>(result));
 
-                        await _watiService.UpdateMessageStatusAsync(message, result);
+                        await _watiService.UpdateMessageStatusAsync(messages[i], result);
                     }
                 }
             }
