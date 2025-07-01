@@ -91,7 +91,7 @@ namespace Mail.Engine.Service.Application.Handlers
 
                             await Task.Delay(TimeSpan.FromSeconds(60));
 
-                            if (!await SendMessage(phone, () => PayloadTemplates.SendLoginTemplate(phone)))
+                            if (!await SendMessage(phone, () => PayloadTemplates.SendLoginTemplate(customer.CustomerId)))
                             {
                                 await AddResponse(customer.CustomerId, phone, false,
                                     "Failed to send login template message", "Login template message failed");
