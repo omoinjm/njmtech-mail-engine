@@ -26,16 +26,6 @@ namespace Mail.Engine.Service.Infrastructure.Services.Wati
 
             var responseContent = await response.Content.ReadAsStringAsync();
 
-            var data = JsonConvert.DeserializeObject<JObject>(responseContent)
-                ?? throw new InvalidOperationException("Empty or invalid JSON response.");
-
-            bool isOk = data["ok"]?.Value<bool>() == true;
-
-            string result = data["result"]?.ToString()!;
-
-            if (!isOk || result != "success")
-                throw new InvalidOperationException($"WATI API response indicates failure: {responseContent}");
-
             return JsonConvert.DeserializeObject<WatiApiResult>(responseContent)!;
         }
 
@@ -48,6 +38,16 @@ namespace Mail.Engine.Service.Infrastructure.Services.Wati
             response.EnsureSuccessStatusCode();
 
             var responseContent = await response.Content.ReadAsStringAsync();
+
+            var data = JsonConvert.DeserializeObject<JObject>(responseContent)
+                ?? throw new InvalidOperationException("Empty or invalid JSON response.");
+
+            bool isOk = data["ok"]?.Value<bool>() == true;
+
+            string result = data["result"]?.ToString()!;
+
+            if (!isOk || result != "success")
+                throw new InvalidOperationException($"WATI API response indicates failure: {responseContent}");
 
             return JsonConvert.DeserializeObject<WatiApiResult>(responseContent)!;
         }
