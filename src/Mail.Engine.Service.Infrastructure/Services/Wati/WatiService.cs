@@ -10,34 +10,75 @@ using Newtonsoft.Json.Linq;
 
 namespace Mail.Engine.Service.Infrastructure.Services.Wati
 {
-    public class WatiService(IWatiRepository watiRepository, IMailRepository mailRepository) : IWatiService
+    public class WatiService : IWatiService
     {
+        private readonly string BASE_URL;
         private readonly HttpClient _httpClient = new();
-        private readonly IWatiRepository _watiRepository = watiRepository;
-        private readonly IMailRepository _mailRepository = mailRepository;
+        private readonly IWatiRepository _watiRepository;
+        private readonly IMailRepository _mailRepository;
+
+        public WatiService(IWatiRepository watiRepository, IMailRepository mailRepository)
+        {
+            _watiRepository = watiRepository;
+            _mailRepository = mailRepository;
+
+            var watiConfig = watiRepository.GetWatiConfig().GetAwaiter().GetResult();
+
+            if (watiConfig != null)
+            {
+                BASE_URL = watiConfig.BaseUrl;
+
+                _httpClient = new HttpClient
+                {
+                    BaseAddress = new Uri(watiConfig.BaseUrl)
+                };
+
+                _httpClient.DefaultRequestHeaders.Accept.Clear();
+                _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("*/*"));
+                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", watiConfig.Bearer);
+            }
+        }
 
         public async Task<WatiApiResult> SendMessageTemplate(string whatsappNumber, string payload)
         {
-            await InitializeHttpClient();
+            // await InitializeHttpClient();
 
-            var content = new StringContent(payload, Encoding.UTF8, "application/json");
+            var url = $"{BASE_URL}/api/v1/sendTemplateMessage?whatsappNumber={whatsappNumber}";
 
-            var response = await _httpClient.PostAsync($"sendTemplateMessage?whatsappNumber={whatsappNumber}", content);
+            var content = new StringContent(payload, Encoding.UTF8, "application/json-patch+json");
+
+            var response = await _httpClient.PostAsync(url, content);
 
             var responseContent = await response.Content.ReadAsStringAsync();
+
+            var data = JsonConvert.DeserializeObject<JObject>(responseContent)
+                ?? throw new InvalidOperationException("Empty or invalid JSON response.");
+
 
             return JsonConvert.DeserializeObject<WatiApiResult>(responseContent)!;
         }
 
         public async Task<WatiApiResult> SendMessage(string whatsappNumber, string message)
         {
-            await InitializeHttpClient();
+            // await InitializeHttpClient();
 
-            var response = await _httpClient.PostAsync($"sendSessionMessage/{whatsappNumber}?messageText={message}", null);
+            var url = $"{BASE_URL}/api/v1/sendSessionMessage/{whatsappNumber}?messageText={message}";
 
+
+            var response = await _httpClient.PostAsync(url, null);
             response.EnsureSuccessStatusCode();
 
             var responseContent = await response.Content.ReadAsStringAsync();
+
+            var data = JsonConvert.DeserializeObject<JObject>(responseContent)
+                ?? throw new InvalidOperationException("Empty or invalid JSON response.");
+
+            bool isOk = data["ok"]?.Value<bool>() == true;
+
+            string result = data["result"]?.ToString()!;
+
+            if (!isOk || result != "success")
+                throw new InvalidOperationException($"WATI API response indicates failure: {responseContent}");
 
             return JsonConvert.DeserializeObject<WatiApiResult>(responseContent)!;
         }
