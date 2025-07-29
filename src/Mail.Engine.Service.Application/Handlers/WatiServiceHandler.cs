@@ -36,7 +36,13 @@ namespace Mail.Engine.Service.Application.Handlers
                         if (messages[i].Body!.IsValidJson())
                             result = await _watiService.SendMessageTemplate(messages[i].ToField!, messages[i].Body!);
                         else
-                            result = await _watiService.SendMessage(messages[i].ToField!, messages[i].Body!);
+                        {
+                            var isSuccess = await _watiService.SendMessage(messages[i].ToField!, messages[i].Body!);
+
+                            result = isSuccess
+                                ? new WatiApiResult { Result = true, PhoneNumber = messages[i].ToField! }
+                                : new WatiApiResult { Result = false, PhoneNumber = messages[i].ToField! };
+                        }
 
                         response.Add(LazyMapper.Mapper.Map<WatiApiResponse>(result));
 

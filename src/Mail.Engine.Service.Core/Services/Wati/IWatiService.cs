@@ -6,7 +6,7 @@ namespace Mail.Engine.Service.Core.Services.Wati
     public interface IWatiService
     {
         Task<WatiApiResult> SendMessageTemplate(string whatsappNumber, string payload);
-        Task<WatiApiResult> SendMessage(string whatsappNumber, string message);
+        Task<bool> SendMessage(string whatsappNumber, string message);
 
 
         Task UpdateMessageStatusAsync(MessageLogEntity messageLog, WatiApiResult result);

@@ -59,7 +59,7 @@ namespace Mail.Engine.Service.Infrastructure.Services.Wati
             return JsonConvert.DeserializeObject<WatiApiResult>(responseContent)!;
         }
 
-        public async Task<WatiApiResult> SendMessage(string whatsappNumber, string message)
+        public async Task<bool> SendMessage(string whatsappNumber, string message)
         {
             // await InitializeHttpClient();
 
@@ -81,7 +81,7 @@ namespace Mail.Engine.Service.Infrastructure.Services.Wati
             if (!isOk || result != "success")
                 throw new InvalidOperationException($"WATI API response indicates failure: {responseContent}");
 
-            return JsonConvert.DeserializeObject<WatiApiResult>(responseContent)!;
+            return true;
         }
 
         public async Task UpdateMessageStatusAsync(MessageLogEntity messageLog, WatiApiResult result)
