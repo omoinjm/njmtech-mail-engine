@@ -6,6 +6,7 @@ using Mail.Engine.Service.Core.Repositories;
 using Mail.Engine.Service.Core.Results.Wati;
 using Mail.Engine.Service.Core.Services.Wati;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Mail.Engine.Service.Infrastructure.Services.Wati
 {
@@ -18,15 +19,26 @@ namespace Mail.Engine.Service.Infrastructure.Services.Wati
         private readonly IWatiRepository _watiRepository = watiRepository;
         private readonly IMailRepository _mailRepository = mailRepository;
 
-
-        public async Task<WatiApiResult> SendMessage(string whatsappNumber, string payload)
+        public async Task<WatiApiResult> SendMessageTemplate(string whatsappNumber, string payload)
         {
             await InitializeHttpClient();
 
-            // var jsonString = JsonConvert.SerializeObject(payload);
             var content = new StringContent(payload, Encoding.UTF8, "application/json");
 
             var response = await _httpClient.PostAsync($"sendTemplateMessage?whatsappNumber={whatsappNumber}", content);
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+
+            return JsonConvert.DeserializeObject<WatiApiResult>(responseContent)!;
+        }
+
+        public async Task<WatiApiResult> SendMessage(string whatsappNumber, string message)
+        {
+            await InitializeHttpClient();
+
+            var response = await _httpClient.PostAsync($"sendSessionMessage/{whatsappNumber}?messageText={message}", null);
+
+            response.EnsureSuccessStatusCode();
 
             var responseContent = await response.Content.ReadAsStringAsync();
 
@@ -60,6 +72,9 @@ namespace Mail.Engine.Service.Infrastructure.Services.Wati
             if (watiConfig != null)
             {
                 _httpClient.BaseAddress = new Uri(watiConfig.BaseUrl);
+
+                _httpClient.DefaultRequestHeaders.Accept.Clear();
+                _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("*/*"));
                 _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", watiConfig.Bearer);
             }
         }

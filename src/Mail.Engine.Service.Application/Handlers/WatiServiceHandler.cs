@@ -1,6 +1,7 @@
 using Mail.Engine.Service.Application.Mapper;
 using Mail.Engine.Service.Application.Queries;
 using Mail.Engine.Service.Application.Response.Wati;
+using Mail.Engine.Service.Core.Helpers;
 using Mail.Engine.Service.Core.Repositories;
 using Mail.Engine.Service.Core.Results.Wati;
 using Mail.Engine.Service.Core.Services.Wati;
@@ -32,7 +33,10 @@ namespace Mail.Engine.Service.Application.Handlers
                 {
                     for (int i = 0; i < messages.Count; i++)
                     {
-                        result = await _watiService.SendMessage(messages[i].ToField!, messages[i].Body!);
+                        if (messages[i].Body!.IsValidJson())
+                            result = await _watiService.SendMessageTemplate(messages[i].ToField!, messages[i].Body!);
+                        else
+                            result = await _watiService.SendMessage(messages[i].ToField!, messages[i].Body!);
 
                         response.Add(LazyMapper.Mapper.Map<WatiApiResponse>(result));
 

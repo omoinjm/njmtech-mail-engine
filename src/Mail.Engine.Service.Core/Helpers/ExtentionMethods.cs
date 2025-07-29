@@ -1,3 +1,4 @@
+using System.Text.Json;
 using Mail.Engine.Service.Core.Utils;
 using MimeKit;
 
@@ -40,6 +41,21 @@ namespace Mail.Engine.Service.Core.Helpers
                 "ZWE" => PhoneNumberValidator.IsValidZimbabweMobileNumber(phoneNumber),
                 _ => false
             };
+        }
+
+        public static bool IsValidJson(this string input)
+        {
+            if (string.IsNullOrWhiteSpace(input)) return false;
+
+            try
+            {
+                JsonDocument.Parse(input);
+                return true;
+            }
+            catch (JsonException)
+            {
+                return false;
+            }
         }
     }
 }
