@@ -10,18 +10,33 @@ using Newtonsoft.Json.Linq;
 
 namespace Mail.Engine.Service.Infrastructure.Services.Wati
 {
-    public class WatiService(
-        IWatiRepository watiRepository,
-        IMailRepository mailRepository
-    ) : IWatiService
+    public class WatiService : IWatiService
     {
         private readonly HttpClient _httpClient = new();
-        private readonly IWatiRepository _watiRepository = watiRepository;
-        private readonly IMailRepository _mailRepository = mailRepository;
+        private readonly IWatiRepository _watiRepository;
+        private readonly IMailRepository _mailRepository;
+
+        public WatiService(IWatiRepository watiRepository, IMailRepository mailRepository)
+        {
+            _watiRepository = watiRepository;
+            _mailRepository = mailRepository;
+
+            var watiConfig = _watiRepository.GetWatiConfig().GetAwaiter().GetResult(); ;
+
+            if (watiConfig != null)
+            {
+                _httpClient.BaseAddress = new Uri(watiConfig.BaseUrl);
+
+                _httpClient.DefaultRequestHeaders.Accept.Clear();
+                _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("*/*"));
+                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", watiConfig.Bearer);
+            }
+        }
+
 
         public async Task<WatiApiResult> SendMessageTemplate(string whatsappNumber, string payload)
         {
-            await InitializeHttpClient();
+            // await InitializeHttpClient();
 
             var content = new StringContent(payload, Encoding.UTF8, "application/json");
 
@@ -34,7 +49,7 @@ namespace Mail.Engine.Service.Infrastructure.Services.Wati
 
         public async Task<WatiApiResult> SendMessage(string whatsappNumber, string message)
         {
-            await InitializeHttpClient();
+            // await InitializeHttpClient();
 
             var response = await _httpClient.PostAsync($"sendSessionMessage/{whatsappNumber}?messageText={message}", null);
 
