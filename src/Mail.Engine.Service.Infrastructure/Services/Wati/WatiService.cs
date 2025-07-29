@@ -12,7 +12,8 @@ namespace Mail.Engine.Service.Infrastructure.Services.Wati
 {
     public class WatiService : IWatiService
     {
-        private readonly string BASE_URL;
+        private readonly string? BASE_URL;
+
         private readonly HttpClient _httpClient = new();
         private readonly IWatiRepository _watiRepository;
         private readonly IMailRepository _mailRepository;
@@ -43,7 +44,7 @@ namespace Mail.Engine.Service.Infrastructure.Services.Wati
         {
             // await InitializeHttpClient();
 
-            var url = $"{BASE_URL}/api/v1/sendTemplateMessage?whatsappNumber={whatsappNumber}";
+            var url = $"{BASE_URL}sendTemplateMessage?whatsappNumber={whatsappNumber}";
 
             var content = new StringContent(payload, Encoding.UTF8, "application/json-patch+json");
 
@@ -62,13 +63,13 @@ namespace Mail.Engine.Service.Infrastructure.Services.Wati
         {
             // await InitializeHttpClient();
 
-            var url = $"{BASE_URL}/api/v1/sendSessionMessage/{whatsappNumber}?messageText={message}";
-
+            var url = $"{BASE_URL}sendSessionMessage/{whatsappNumber}?messageText={message}";
 
             var response = await _httpClient.PostAsync(url, null);
-            response.EnsureSuccessStatusCode();
 
             var responseContent = await response.Content.ReadAsStringAsync();
+
+            response.EnsureSuccessStatusCode();
 
             var data = JsonConvert.DeserializeObject<JObject>(responseContent)
                 ?? throw new InvalidOperationException("Empty or invalid JSON response.");
