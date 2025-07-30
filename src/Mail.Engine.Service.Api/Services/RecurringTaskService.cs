@@ -34,7 +34,7 @@ namespace Mail.Engine.Service.Api.Services
 
                     _logger.LogInformation($"Inbound Mails Processed: {JsonSerializer.Serialize(inboundResult)}");
                     _logger.LogInformation($"Outbound Mails Processed: {JsonSerializer.Serialize(outboundResult)}");
-                    _logger.LogInformation($"Wati Mails Processed: {JsonSerializer.Serialize(watiResult)}");
+                    _logger.LogInformation($"Wati Messages Processed: {JsonSerializer.Serialize(watiResult)}");
                     // _logger.LogInformation($"Wati Customer Autologout: {JsonSerializer.Serialize(customerLogoutResult)}");
                 }
                 catch (Exception ex)

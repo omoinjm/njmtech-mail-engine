@@ -19,8 +19,6 @@ namespace Mail.Engine.Service.Application.Handlers
 
         public async Task<List<WatiApiResponse>> Handle(GetWatiQuery request, CancellationToken cancellationToken)
         {
-            var result = new WatiApiResult();
-
             var response = new List<WatiApiResponse>();
 
             var watiConfig = await _repository.GetWatiConfig();
@@ -31,22 +29,43 @@ namespace Mail.Engine.Service.Application.Handlers
 
                 if (messages != null && messages.Count > 0)
                 {
-                    for (int i = 0; i < messages.Count; i++)
+                    foreach (var message in messages)
                     {
-                        if (messages[i].Body!.IsValidJson())
-                            result = await _watiService.SendMessageTemplate(messages[i].ToField!, messages[i].Body!);
-                        else
+                        try
                         {
-                            var isSuccess = await _watiService.SendMessage(messages[i].ToField!, messages[i].Body!);
+                            WatiApiResult result;
 
-                            result = isSuccess
-                                ? new WatiApiResult { Result = true, PhoneNumber = messages[i].ToField! }
-                                : new WatiApiResult { Result = false, PhoneNumber = messages[i].ToField! };
+                            if (message.Body!.IsValidJson())
+                            {
+                                result = await _watiService.SendMessageTemplate(message.ToField!, message.Body!);
+                            }
+                            else
+                            {
+                                var isSuccess = await _watiService.SendMessage(message.ToField!, message.Body!);
+                                result = isSuccess
+                                    ? new WatiApiResult { Result = true, PhoneNumber = message.ToField! }
+                                    : new WatiApiResult { Result = false, PhoneNumber = message.ToField! };
+                            }
+
+                            response.Add(LazyMapper.Mapper.Map<WatiApiResponse>(result));
+
+                            await _watiService.UpdateMessageStatusAsync(message, result);
                         }
+                        catch (Exception ex)
+                        {
+                            // Log the error - replace with your preferred logging system
+                            Console.WriteLine($"Error processing message to {message.ToField}: {ex.Message}");
 
-                        response.Add(LazyMapper.Mapper.Map<WatiApiResponse>(result));
+                            // Optionally, you can record the failed attempt as well:
+                            var failedResult = new WatiApiResult
+                            {
+                                Result = false,
+                                PhoneNumber = message.ToField!,
+                                // ErrorMessage = ex.Message
+                            };
 
-                        await _watiService.UpdateMessageStatusAsync(messages[i], result);
+                            response.Add(LazyMapper.Mapper.Map<WatiApiResponse>(failedResult));
+                        }
                     }
                 }
             }
